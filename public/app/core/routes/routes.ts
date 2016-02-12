@@ -5,6 +5,7 @@ import './dashboard_loaders';
 import angular from 'angular';
 import coreModule from 'app/core/core_module';
 import {BundleLoader} from './bundle_loader';
+import {DashLoader} from './dash_loader';
 
 /** @ngInject **/
 function setupAngularRoutes($routeProvider, $locationProvider) {
@@ -12,17 +13,20 @@ function setupAngularRoutes($routeProvider, $locationProvider) {
 
   var loadOrgBundle = new BundleLoader('app/features/org/all');
   var loadAppsBundle = new BundleLoader('app/features/apps/all');
+  var dashLoader = new DashLoader();
 
   $routeProvider
   .when('/', {
     templateUrl: 'public/app/partials/dashboard.html',
     controller : 'LoadDashboardCtrl',
     reloadOnSearch: false,
+    resolve: dashLoader,
   })
   .when('/dashboard/:type/:slug', {
     templateUrl: 'public/app/partials/dashboard.html',
     controller : 'LoadDashboardCtrl',
     reloadOnSearch: false,
+    resolve: dashLoader,
   })
   .when('/dashboard-solo/:type/:slug', {
     templateUrl: 'public/app/features/panel/partials/soloPanel.html',
