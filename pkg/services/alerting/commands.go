@@ -2,20 +2,22 @@ package alerting
 
 import (
 	"github.com/grafana/grafana/pkg/bus"
+	"github.com/grafana/grafana/pkg/components/simplejson"
 	m "github.com/grafana/grafana/pkg/models"
 )
 
-type UpdateDashboardAlertsCommand struct {
-	UserId    int64
-	OrgId     int64
-	Dashboard *m.Dashboard
+type SaveDashboardAlertsCommand struct {
+	UserId      int64
+	OrgId       int64
+	DashboardId int64
+	Alerts      []*simplejson.Json
 }
 
 func init() {
-	bus.AddHandler("alerting", updateDashboardAlerts)
+	bus.AddHandler("alerting", saveDashboardAlertsHandler)
 }
 
-func updateDashboardAlerts(cmd *UpdateDashboardAlertsCommand) error {
+func saveDashboardAlertsHandler(cmd *UpdateDashboardAlertsCommand) error {
 	saveAlerts := m.SaveAlertsCommand{
 		OrgId:       cmd.OrgId,
 		UserId:      cmd.UserId,

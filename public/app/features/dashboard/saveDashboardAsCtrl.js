@@ -25,7 +25,7 @@ function (angular) {
     };
 
     function saveDashboard(options) {
-      return backendSrv.saveDashboard($scope.clone, options).then(function(result) {
+      return backendSrv.saveDashboard(options).then(function(result) {
         $scope.appEvent('alert-success', ['Dashboard saved', 'Saved as ' + $scope.clone.title]);
 
         $location.url('/dashboard/db/' + result.slug);
@@ -42,7 +42,11 @@ function (angular) {
     };
 
     $scope.saveClone = function() {
-      saveDashboard({overwrite: false}).then(null, function(err) {
+      saveDashboard({
+        dashboard: $scope.clone,
+        overwrite: false
+      }).catch(function(err) {
+
         if (err.data && err.data.status === "name-exists") {
           err.isHandled = true;
 
@@ -53,7 +57,7 @@ function (angular) {
             yesText: "Save & Overwrite",
             icon: "fa-warning",
             onConfirm: function() {
-              saveDashboard({overwrite: true});
+              saveDashboard({dashboard: $scope.clone, overwrite: true});
             }
           });
         }

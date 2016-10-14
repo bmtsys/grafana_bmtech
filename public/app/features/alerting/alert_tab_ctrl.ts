@@ -129,10 +129,11 @@ export class AlertTabCtrl {
   }
 
   initModel() {
-    var alert = this.alert = this.panel.alert;
-    if (!alert) {
+    if (!this.alert) {
       return;
     }
+
+    var alert = this.alert;
 
     alert.conditions = alert.conditions || [];
     if (alert.conditions.length === 0) {
@@ -152,7 +153,7 @@ export class AlertTabCtrl {
       return memo;
     }, []);
 
-    ThresholdMapper.alertToGraphThresholds(this.panel);
+    //ThresholdMapper.alertToGraphThresholds(this.panel);
 
     for (let addedNotification of alert.notifications) {
       var model = _.find(this.notifications, {id: addedNotification.id});
@@ -322,12 +323,17 @@ export class AlertTabCtrl {
   }
 
   enable() {
-    this.panel.alert = {};
+    this.panel.alert = {id: 0};
+    this.alert = {
+      panelId: this.panel.id
+    };
+
     this.initModel();
+    this.dashboardSrv.addAlert(this.alert);
   }
 
   evaluatorParamsChanged() {
-    ThresholdMapper.alertToGraphThresholds(this.panel);
+    //ThresholdMapper.alertToGraphThresholds(this.panel);
     this.panelCtrl.render();
   }
 

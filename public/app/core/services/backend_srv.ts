@@ -173,9 +173,8 @@ export class BackendSrv {
     return this.get('/api/dashboards/' + type + '/' + slug);
   }
 
-  saveDashboard(dash, options) {
-    options = (options || {});
-    return this.post('/api/dashboards/db/', {dashboard: dash, overwrite: options.overwrite === true});
+  saveDashboard(options) {
+    return this.post('/api/dashboards/db/', options);
   }
 }
 

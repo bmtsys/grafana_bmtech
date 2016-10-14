@@ -16,7 +16,6 @@ export class DashboardCtrl {
     dashboardKeybindings,
     timeSrv,
     variableSrv,
-    alertingSrv,
     dashboardSrv,
     unsavedChangesSrv,
     dynamicDashboardSrv,
@@ -39,12 +38,10 @@ export class DashboardCtrl {
       };
 
       $scope.setupDashboardInternal = function(data) {
-        var dashboard = dashboardSrv.create(data.dashboard, data.meta);
-        dashboardSrv.setCurrent(dashboard);
+        var dashboard = dashboardSrv.init(data);
 
         // init services
         timeSrv.init(dashboard);
-        alertingSrv.init(dashboard, data.alerts);
 
         // template values service needs to initialize completely before
         // the rest of the dashboard can load

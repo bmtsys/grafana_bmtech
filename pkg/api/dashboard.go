@@ -111,16 +111,21 @@ func DeleteDashboard(c *middleware.Context) {
 	c.JSON(200, resp)
 }
 
-func PostDashboard(c *middleware.Context, cmd m.SaveDashboardCommand) Response {
-	cmd.OrgId = c.OrgId
+func PostDashboard(c *middleware.Context, apiCmd dtos.SaveDashboardCmd) Response {
 
-	if !c.IsSignedIn {
-		cmd.UserId = -1
-	} else {
-		cmd.UserId = c.UserId
+	internalSaveDashCmd := m.SaveDashboardCommand{
+		Dashboard: apiCmd.Dashboard,
+		Overwrite: apiCmd.Overwrite,
+		OrgId:     c.OrgId,
 	}
 
-	dash := cmd.GetDashboardModel()
+	if !c.IsSignedIn {
+		internalSaveDashCmd.UserId = -1
+	} else {
+		internalSaveDashCmd.UserId = c.UserId
+	}
+
+	dash := internalSaveDashCmd.GetDashboardModel()
 	if dash.Id == 0 {
 		limitReached, err := middleware.QuotaReached(c, "dashboard")
 		if err != nil {
@@ -131,7 +136,7 @@ func PostDashboard(c *middleware.Context, cmd m.SaveDashboardCommand) Response {
 		}
 	}
 
-	err := bus.Dispatch(&cmd)
+	err := bus.Dispatch(&internalSaveDashCmd)
 	if err != nil {
 		if err == m.ErrDashboardWithSameNameExists {
 			return Json(412, util.DynMap{"status": "name-exists", "message": err.Error()})
@@ -153,18 +158,23 @@ func PostDashboard(c *middleware.Context, cmd m.SaveDashboardCommand) Response {
 		return ApiError(500, "Failed to save dashboard", err)
 	}
 
-	alertCmd := alerting.UpdateDashboardAlertsCommand{
-		OrgId:     c.OrgId,
-		UserId:    c.UserId,
-		Dashboard: cmd.Result,
+	saveAlertsCmd := alerting.SaveDashboardAlertsCommand{
+		OrgId:       c.OrgId,
+		UserId:      c.UserId,
+		DashboardId: internalSaveDashCmd.Result.Id,
+		Alerts:      apiCmd.Alerts,
 	}
 
-	if err := bus.Dispatch(&alertCmd); err != nil {
+	if err := bus.Dispatch(&saveAlertsCmd); err != nil {
 		return ApiError(500, "Failed to save alerts", err)
 	}
 
 	c.TimeRequest(metrics.M_Api_Dashboard_Save)
-	return Json(200, util.DynMap{"status": "success", "slug": cmd.Result.Slug, "version": cmd.Result.Version})
+	return Json(200, util.DynMap{
+		"status":  "success",
+		"slug":    internalSaveDashCmd.Result.Slug,
+		"version": internalSaveDashCmd.Result.Version,
+	})
 }
 
 func canEditDashboard(role m.RoleType) bool {

@@ -6,6 +6,7 @@ import {DashboardModel} from './model';
 
 export class DashboardSrv {
   dash: any;
+  alerts: any[];
 
   /** @ngInject */
   constructor(private backendSrv, private $rootScope, private $location) {
@@ -15,22 +16,30 @@ export class DashboardSrv {
     return new DashboardModel(dashboard, meta);
   }
 
-  setCurrent(dashboard) {
-    this.dash = dashboard;
+  init(data) {
+    this.dash = this.create(data.dashboard, data.meta);
+    this.alerts = [];
+
+    return this.dash;
   }
 
   getCurrent() {
     return this.dash;
   }
 
+  addAlert(alert) {
+    this.alerts.push(alert);
+  }
+
   saveDashboard(options) {
-    if (!this.dash.meta.canSave && options.makeEditable !== true) {
+    if (this.dash.meta.canSave === false && options.makeEditable !== true) {
       return Promise.resolve();
     }
 
-    var clone = this.dash.getSaveModelClone();
+    options.dashboard = this.dash.getSaveModelClone();
+    options.alerts = this.alerts;
 
-    return this.backendSrv.saveDashboard(clone, options).then(data => {
+    return this.backendSrv.saveDashboard(options).then(data => {
       this.dash.version = data.version;
 
       this.$rootScope.appEvent('dashboard-saved', this.dash);
@@ -40,7 +49,7 @@ export class DashboardSrv {
         this.$location.url(dashboardUrl);
       }
 
-      this.$rootScope.appEvent('alert-success', ['Dashboard saved', 'Saved as ' + clone.title]);
+      this.$rootScope.appEvent('alert-success', ['Dashboard saved', 'Saved as ' + options.dashboard.title]);
     }).catch(this.handleSaveDashboardError.bind(this));
   }
 

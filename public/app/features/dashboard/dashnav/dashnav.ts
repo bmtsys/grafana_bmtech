@@ -77,8 +77,8 @@ export class DashNavCtrl {
       });
     };
 
-    $scope.saveDashboard = function(options) {
-      return dashboardSrv.saveDashboard(options);
+    $scope.saveDashboard = function() {
+      return dashboardSrv.saveDashboard({overwrite: false});
     };
 
     $scope.deleteDashboard = function() {
