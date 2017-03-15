@@ -1,8 +1,7 @@
 package middleware
 
 import (
-	"math/rand"
-	"time"
+	"net/http"
 
 	"github.com/go-macaron/session"
 	_ "github.com/go-macaron/session/memcache"
@@ -10,6 +9,7 @@ import (
 	_ "github.com/go-macaron/session/postgres"
 	_ "github.com/go-macaron/session/redis"
 	"github.com/grafana/grafana/pkg/log"
+	"github.com/grafana/grafana/pkg/setting"
 	"gopkg.in/macaron.v1"
 )
 
@@ -26,66 +26,24 @@ var startSessionGC func()
 var getSessionCount func() int
 var sessionLogger = log.New("session")
 
-func init() {
-	startSessionGC = func() {
-		sessionManager.GC()
-		sessionLogger.Debug("Session GC")
-		time.AfterFunc(time.Duration(sessionOptions.Gclifetime)*time.Second, startSessionGC)
-	}
-	getSessionCount = func() int {
-		return sessionManager.Count()
-	}
-}
-
-func prepareOptions(opt *session.Options) *session.Options {
-	if len(opt.Provider) == 0 {
-		opt.Provider = "memory"
-	}
-	if len(opt.ProviderConfig) == 0 {
-		opt.ProviderConfig = "data/sessions"
-	}
-	if len(opt.CookieName) == 0 {
-		opt.CookieName = "grafana_sess"
-	}
-	if len(opt.CookiePath) == 0 {
-		opt.CookiePath = "/"
-	}
-	if opt.Gclifetime == 0 {
-		opt.Gclifetime = 3600
-	}
-	if opt.Maxlifetime == 0 {
-		opt.Maxlifetime = opt.Gclifetime
-	}
-	if opt.IDLength == 0 {
-		opt.IDLength = 16
-	}
-
-	return opt
-}
-
 func Sessioner(options *session.Options) macaron.Handler {
-	var err error
-	sessionOptions = prepareOptions(options)
-	sessionManager, err = session.NewManager(options.Provider, *options)
-	if err != nil {
-		panic(err)
-	}
-
-	// start GC threads after some random seconds
-	rndSeconds := 10 + rand.Int63n(180)
-	time.AfterFunc(time.Duration(rndSeconds)*time.Second, startSessionGC)
-
 	return func(ctx *Context) {
 		ctx.Next()
 
-		if err = ctx.Session.Release(); err != nil {
+		if err := ctx.Session.Release(); err != nil {
 			panic("session(release): " + err.Error())
 		}
 	}
 }
 
 func GetSession() SessionStore {
-	return &SessionWrapper{manager: sessionManager}
+	return &CookieSessionStore{
+		cookieName:   setting.SessionOptions.CookieName,
+		cookieSecure: setting.SessionOptions.Secure,
+		cookieMaxAge: setting.SessionOptions.CookieLifeTime,
+		cookieDomain: setting.SessionOptions.Domain,
+		cookiePath:   setting.SessionOptions.CookiePath,
+	}
 }
 
 type SessionStore interface {
@@ -103,51 +61,56 @@ type SessionStore interface {
 	Start(*Context) error
 }
 
-type SessionWrapper struct {
-	session session.RawStore
-	manager *session.Manager
+type CookieSessionStore struct {
+	cookieName   string
+	cookieSecure bool
+	cookiePath   string
+	cookieDomain string
+	cookieMaxAge int
+	data         map[string]string
 }
 
-func (s *SessionWrapper) Start(c *Context) error {
-	var err error
-	s.session, err = s.manager.Start(c.Context)
-	return err
-}
-
-func (s *SessionWrapper) Set(k interface{}, v interface{}) error {
-	if s.session != nil {
-		return s.session.Set(k, v)
+func (s *CookieSessionStore) Start(ctx *Context) error {
+	cookieString := ctx.GetCookie(s.cookieName)
+	if len(cookieString) > 0 {
+		sessionLogger.Info("Found session cookie", "cookie", cookieString)
+		return nil
 	}
+
+	cookie := &http.Cookie{
+		Name:     s.cookieName,
+		Value:    "session cookie",
+		Path:     s.cookiePath,
+		HttpOnly: true,
+		Secure:   s.cookieSecure,
+		Domain:   s.cookieDomain,
+	}
+
+	if s.cookieMaxAge >= 0 {
+		cookie.MaxAge = s.cookieMaxAge
+	}
+
+	http.SetCookie(ctx.Resp, cookie)
+	ctx.Req.AddCookie(cookie)
 	return nil
 }
 
-func (s *SessionWrapper) Get(k interface{}) interface{} {
-	if s.session != nil {
-		return s.session.Get(k)
-	}
+func (s *CookieSessionStore) Set(k interface{}, v interface{}) error {
 	return nil
 }
 
-func (s *SessionWrapper) ID() string {
-	if s.session != nil {
-		return s.session.ID()
-	}
+func (s *CookieSessionStore) Get(k interface{}) interface{} {
+	return nil
+}
+
+func (s *CookieSessionStore) ID() string {
 	return ""
 }
 
-func (s *SessionWrapper) Release() error {
-	if s.session != nil {
-		return s.session.Release()
-	}
+func (s *CookieSessionStore) Release() error {
 	return nil
 }
 
-func (s *SessionWrapper) Destory(c *Context) error {
-	if s.session != nil {
-		if err := s.manager.Destory(c.Context); err != nil {
-			return err
-		}
-		s.session = nil
-	}
+func (s *CookieSessionStore) Destory(c *Context) error {
 	return nil
 }
