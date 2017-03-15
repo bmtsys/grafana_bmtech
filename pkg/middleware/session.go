@@ -68,12 +68,13 @@ type CookieSessionStore struct {
 	cookieDomain string
 	cookieMaxAge int
 	data         map[string]string
+	id           string
 }
 
 func (s *CookieSessionStore) Start(ctx *Context) error {
 	cookieString := ctx.GetCookie(s.cookieName)
 	if len(cookieString) > 0 {
-		sessionLogger.Info("Found session cookie", "cookie", cookieString)
+		sessionLogger.Debug("Found session cookie", "cookie", cookieString)
 		return nil
 	}
 
@@ -90,6 +91,9 @@ func (s *CookieSessionStore) Start(ctx *Context) error {
 		cookie.MaxAge = s.cookieMaxAge
 	}
 
+	s.id = "id"
+
+	sessionLogger.Debug("SetCookie", "cookie")
 	http.SetCookie(ctx.Resp, cookie)
 	ctx.Req.AddCookie(cookie)
 	return nil
@@ -104,7 +108,7 @@ func (s *CookieSessionStore) Get(k interface{}) interface{} {
 }
 
 func (s *CookieSessionStore) ID() string {
-	return ""
+	return s.id
 }
 
 func (s *CookieSessionStore) Release() error {
