@@ -2,6 +2,7 @@ package middleware
 
 import (
 	"net/http"
+	"time"
 
 	"github.com/go-macaron/session"
 	_ "github.com/go-macaron/session/memcache"
@@ -48,9 +49,9 @@ func GetSession() SessionStore {
 
 type SessionStore interface {
 	// Set sets value to given key in session.
-	Set(interface{}, interface{}) error
+	Set(string, string) error
 	// Get gets value by given key in session.
-	Get(interface{}) interface{}
+	Get(string) string
 	// ID returns current session ID.
 	ID() string
 	// Release releases session resource and save data to provider.
@@ -67,6 +68,7 @@ type CookieSessionStore struct {
 	cookiePath   string
 	cookieDomain string
 	cookieMaxAge int
+	id           string
 	data         map[string]string
 }
 
@@ -76,6 +78,8 @@ func (s *CookieSessionStore) Start(ctx *Context) error {
 		sessionLogger.Info("Found session cookie", "cookie", cookieString)
 		return nil
 	}
+
+	s.id = "my id"
 
 	cookie := &http.Cookie{
 		Name:     s.cookieName,
@@ -95,16 +99,20 @@ func (s *CookieSessionStore) Start(ctx *Context) error {
 	return nil
 }
 
-func (s *CookieSessionStore) Set(k interface{}, v interface{}) error {
+func (s *CookieSessionStore) Set(k string, v string) error {
+	sessionLogger.Info("Set", "key", k, "value", v)
+	s.data[k] = v
 	return nil
 }
 
-func (s *CookieSessionStore) Get(k interface{}) interface{} {
-	return nil
+func (s *CookieSessionStore) Get(k string) string {
+	sessionLogger.Info("Get", "key", k)
+	value, _ := s.data[k]
+	return value
 }
 
 func (s *CookieSessionStore) ID() string {
-	return ""
+	return s.id
 }
 
 func (s *CookieSessionStore) Release() error {
@@ -112,5 +120,19 @@ func (s *CookieSessionStore) Release() error {
 }
 
 func (s *CookieSessionStore) Destory(c *Context) error {
+	cookieString := c.GetCookie(s.cookieName)
+	if len(cookieString) == 0 {
+		return nil
+	}
+
+	cookie := &http.Cookie{
+		Name:     s.cookieName,
+		Path:     s.cookiePath,
+		HttpOnly: true,
+		Expires:  time.Now(),
+		MaxAge:   -1,
+	}
+
+	http.SetCookie(c.Resp, cookie)
 	return nil
 }
