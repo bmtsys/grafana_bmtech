@@ -2,6 +2,7 @@ package middleware
 
 import (
 	"net/url"
+	"strconv"
 	"strings"
 
 	"gopkg.in/macaron.v1"
@@ -18,8 +19,9 @@ type AuthOptions struct {
 func getRequestUserId(c *Context) int64 {
 	userId := c.Session.Get(SESS_KEY_USERID)
 
-	if userId != nil {
-		return userId.(int64)
+	if userId != "" {
+		userIdInt, _ := strconv.ParseInt(userId, 10, 64)
+		return userIdInt
 	}
 
 	return 0
