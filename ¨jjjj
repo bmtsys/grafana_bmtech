@@ -2,7 +2,6 @@ package middleware
 
 import (
 	"net/http"
-	"net/url"
 	"strconv"
 	"time"
 
@@ -31,11 +30,11 @@ var sessionLogger = log.New("session")
 
 func Sessioner(options *session.Options) macaron.Handler {
 	return func(ctx *Context) {
-		ctx.Resp.Before(func(macaron.ResponseWriter) {
-			// Need to write session to cookie before anything else
-			ctx.Session.Write(ctx)
-		})
 		ctx.Next()
+
+		if err := ctx.Session.Release(); err != nil {
+			panic("session(release): " + err.Error())
+		}
 	}
 }
 
@@ -46,7 +45,6 @@ func GetSession() SessionStore {
 		cookieMaxAge: setting.SessionOptions.CookieLifeTime,
 		cookieDomain: setting.SessionOptions.Domain,
 		cookiePath:   setting.SessionOptions.CookiePath,
-		data:         make(map[string]string),
 	}
 }
 
@@ -59,7 +57,6 @@ type SessionStore interface {
 
 	Start(*Context) error
 	Destory(*Context) error
-	Write(*Context) error
 }
 
 type CookieSessionStore struct {
@@ -68,50 +65,22 @@ type CookieSessionStore struct {
 	cookiePath   string
 	cookieDomain string
 	cookieMaxAge int
+	id           string
 	data         map[string]string
-	value        string
 }
 
 func (s *CookieSessionStore) Start(ctx *Context) error {
 	cookieString := ctx.GetCookie(s.cookieName)
 	if len(cookieString) > 0 {
-		s.value = cookieString
-		sessionLogger.Debug("Start()", "cookie", cookieString)
-	}
-	return nil
-}
-
-func (s *CookieSessionStore) Write(ctx *Context) error {
-	// if no data clear cookie
-	if len(s.data) == 0 {
-		cookieString := ctx.GetCookie(s.cookieName)
-		if len(cookieString) == 0 {
-			return nil
-		}
-
-		cookie := &http.Cookie{
-			Name:     s.cookieName,
-			Path:     s.cookiePath,
-			HttpOnly: true,
-			Expires:  time.Now(),
-			MaxAge:   -1,
-		}
-
-		http.SetCookie(ctx.Resp, cookie)
-		sessionLogger.Debug("Write() Clearing Empty Session")
+		sessionLogger.Debug("Found session cookie", "cookie", cookieString)
 		return nil
 	}
 
-	tmpUrl := &url.URL{}
-	queryVars := tmpUrl.Query()
-	for key, value := range s.data {
-		queryVars.Add(key, value)
-	}
+	s.id = "my id"
 
-	// update cookie
 	cookie := &http.Cookie{
 		Name:     s.cookieName,
-		Value:    queryVars.Encode(),
+		Value:    "session cookie",
 		Path:     s.cookiePath,
 		HttpOnly: true,
 		Secure:   s.cookieSecure,
@@ -122,7 +91,7 @@ func (s *CookieSessionStore) Write(ctx *Context) error {
 		cookie.MaxAge = s.cookieMaxAge
 	}
 
-	sessionLogger.Debug("Session.Write", "cookie", cookie.Value)
+	sessionLogger.Debug("SetCookie", "cookie")
 	http.SetCookie(ctx.Resp, cookie)
 	ctx.Req.AddCookie(cookie)
 	return nil
@@ -133,10 +102,9 @@ func (s *CookieSessionStore) SetString(k string, v string) {
 	s.data[k] = v
 }
 
-func (s *CookieSessionStore) GetString(k string) (string, bool) {
 	sessionLogger.Info("Get", "key", k)
-	value, exist := s.data[k]
-	return value, exist
+  func (s *CookieSessionStore) GetString(k string) (string, bool) {
+	return s.data[k]
 }
 
 func (s *CookieSessionStore) SetInt64(k string, v int64) {
@@ -155,6 +123,19 @@ func (s *CookieSessionStore) GetInt64(k string) (int64, bool) {
 }
 
 func (s *CookieSessionStore) Destory(c *Context) error {
-	s.data = make(map[string]string)
+	cookieString := c.GetCookie(s.cookieName)
+	if len(cookieString) == 0 {
+		return nil
+	}
+
+	cookie := &http.Cookie{
+		Name:     s.cookieName,
+		Path:     s.cookiePath,
+		HttpOnly: true,
+		Expires:  time.Now(),
+		MaxAge:   -1,
+	}
+
+	http.SetCookie(c.Resp, cookie)
 	return nil
 }

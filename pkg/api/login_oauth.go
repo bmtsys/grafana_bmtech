@@ -53,7 +53,7 @@ func OAuthLogin(ctx *middleware.Context) {
 	code := ctx.Query("code")
 	if code == "" {
 		state := GenStateString()
-		ctx.Session.Set(middleware.SESS_KEY_OAUTH_STATE, state)
+		ctx.Session.SetString(middleware.SESS_KEY_OAUTH_STATE, state)
 		if setting.OAuthService.OAuthInfos[name].HostedDomain == "" {
 			ctx.Redirect(connect.AuthCodeURL(state, oauth2.AccessTypeOnline))
 		} else {
@@ -63,7 +63,7 @@ func OAuthLogin(ctx *middleware.Context) {
 	}
 
 	// verify state string
-	savedState := ctx.Session.Get(middleware.SESS_KEY_OAUTH_STATE).(string)
+	savedState, _ := ctx.Session.GetString(middleware.SESS_KEY_OAUTH_STATE)
 	queryState := ctx.Query("state")
 	if savedState != queryState {
 		ctx.Handle(500, "login.OAuthLogin(state mismatch)", nil)

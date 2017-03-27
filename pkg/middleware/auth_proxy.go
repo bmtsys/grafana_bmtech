@@ -3,7 +3,6 @@ package middleware
 import (
 	"errors"
 	"fmt"
-	"strconv"
 	"strings"
 	"time"
 
@@ -89,7 +88,7 @@ func initContextWithAuthProxy(ctx *Context) bool {
 
 	ctx.SignedInUser = query.Result
 	ctx.IsSignedIn = true
-	ctx.Session.Set(SESS_KEY_USERID, strconv.FormatInt(ctx.UserId, 10))
+	ctx.Session.SetInt64(SESS_KEY_USERID, ctx.UserId)
 
 	return true
 }
@@ -98,9 +97,9 @@ var syncGrafanaUserWithLdapUser = func(ctx *Context, query *m.GetSignedInUserQue
 	if setting.LdapEnabled {
 		expireEpoch := time.Now().Add(time.Duration(-setting.AuthProxyLdapSyncTtl) * time.Minute).Unix()
 
-		var lastLdapSync int64
-		if lastLdapSyncInSession := ctx.Session.Get(SESS_KEY_LASTLDAPSYNC); lastLdapSyncInSession != "" {
-			lastLdapSync, _ = strconv.ParseInt(lastLdapSyncInSession, 10, 64)
+		lastLdapSync, exist := ctx.Session.GetInt64(SESS_KEY_LASTLDAPSYNC)
+		if !exist {
+			lastLdapSync = 0
 		}
 
 		if lastLdapSync < expireEpoch {
@@ -113,7 +112,7 @@ var syncGrafanaUserWithLdapUser = func(ctx *Context, query *m.GetSignedInUserQue
 				}
 			}
 
-			ctx.Session.Set(SESS_KEY_LASTLDAPSYNC, strconv.FormatInt(time.Now().Unix(), 10))
+			ctx.Session.SetInt64(SESS_KEY_LASTLDAPSYNC, time.Now().Unix())
 		}
 	}
 

@@ -140,7 +140,7 @@ func loginUserWithUser(user *m.User, c *middleware.Context) {
 		c.SetSuperSecureCookie(util.EncodeMd5(user.Rands+user.Password), setting.CookieRememberName, user.Login, days, setting.AppSubUrl+"/")
 	}
 
-	c.Session.Set(middleware.SESS_KEY_USERID, user.Id)
+	c.Session.SetInt64(middleware.SESS_KEY_USERID, user.Id)
 }
 
 func Logout(c *middleware.Context) {
