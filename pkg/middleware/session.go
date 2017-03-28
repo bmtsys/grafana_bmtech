@@ -46,7 +46,7 @@ func GetSession() SessionStore {
 		cookieMaxAge: setting.SessionOptions.CookieLifeTime,
 		cookieDomain: setting.SessionOptions.Domain,
 		cookiePath:   setting.SessionOptions.CookiePath,
-		data:         make(map[string]string),
+		data:         make(url.Values),
 	}
 }
 
@@ -68,15 +68,17 @@ type CookieSessionStore struct {
 	cookiePath   string
 	cookieDomain string
 	cookieMaxAge int
-	data         map[string]string
-	value        string
+	data         url.Values
+	cookieValue  string
 }
 
 func (s *CookieSessionStore) Start(ctx *Context) error {
 	cookieString := ctx.GetCookie(s.cookieName)
 	if len(cookieString) > 0 {
-		s.value = cookieString
-		sessionLogger.Debug("Start()", "cookie", cookieString)
+		s.cookieValue = cookieString
+		values, _ := url.ParseQuery(cookieString)
+		s.data = values
+		sessionLogger.Debug("Start()", "cookie", cookieString, "keys", len(values))
 	}
 	return nil
 }
@@ -102,16 +104,10 @@ func (s *CookieSessionStore) Write(ctx *Context) error {
 		return nil
 	}
 
-	tmpUrl := &url.URL{}
-	queryVars := tmpUrl.Query()
-	for key, value := range s.data {
-		queryVars.Add(key, value)
-	}
-
 	// update cookie
 	cookie := &http.Cookie{
 		Name:     s.cookieName,
-		Value:    queryVars.Encode(),
+		Value:    s.data.Encode(),
 		Path:     s.cookiePath,
 		HttpOnly: true,
 		Secure:   s.cookieSecure,
@@ -130,24 +126,26 @@ func (s *CookieSessionStore) Write(ctx *Context) error {
 
 func (s *CookieSessionStore) SetString(k string, v string) {
 	sessionLogger.Info("Set", "key", k, "value", v)
-	s.data[k] = v
+	s.data.Set(k, v)
 }
 
 func (s *CookieSessionStore) GetString(k string) (string, bool) {
 	sessionLogger.Info("Get", "key", k)
-	value, exist := s.data[k]
-	return value, exist
+	value := s.data.Get(k)
+	return value, value != ""
 }
 
 func (s *CookieSessionStore) SetInt64(k string, v int64) {
 	sessionLogger.Info("Set", "key", k, "value", v)
-	s.data[k] = strconv.FormatInt(v, 10)
+	s.data.Set(k, strconv.FormatInt(v, 10))
 }
 
 func (s *CookieSessionStore) GetInt64(k string) (int64, bool) {
-	sessionLogger.Info("Get", "key", k)
-	if value, exist := s.data[k]; exist {
-		if intValue, err := strconv.ParseInt(value, 10, 64); err != nil {
+	value := s.data.Get(k)
+	sessionLogger.Info("Get", "key", k, "value", value)
+
+	if value != "" {
+		if intValue, err := strconv.ParseInt(value, 10, 64); err == nil {
 			return intValue, true
 		}
 	}
@@ -155,6 +153,6 @@ func (s *CookieSessionStore) GetInt64(k string) (int64, bool) {
 }
 
 func (s *CookieSessionStore) Destory(c *Context) error {
-	s.data = make(map[string]string)
+	s.data = make(url.Values)
 	return nil
 }
