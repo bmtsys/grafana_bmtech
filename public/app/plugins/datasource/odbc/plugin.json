@@ -1,0 +1,17 @@
+{
+  "type": "datasource",
+  "name": "ODBC",
+  "id": "odbc",
+
+  "info": {
+    "author": {
+      "name": "Grafana Project",
+      "url": "https://grafana.com"
+    }
+  },
+
+  "state": "alpha",
+  "alerting": true,
+  "annotations": true,
+  "metrics": true
+}
