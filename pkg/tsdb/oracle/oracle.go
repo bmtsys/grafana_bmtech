@@ -3,19 +3,20 @@ package oracle
 import (
 	"container/list"
 	"context"
+	"database/sql"
 	"fmt"
 	"strconv"
 	"time"
 
-	"github.com/go-xorm/core"
 	"github.com/grafana/grafana/pkg/components/null"
 	"github.com/grafana/grafana/pkg/log"
 	"github.com/grafana/grafana/pkg/models"
 	"github.com/grafana/grafana/pkg/tsdb"
+	_ "github.com/mattn/go-oci8"
 )
 
 type OracleQueryEndpoint struct {
-	sqlEngine tsdb.SqlEngine
+	sqlEngine *OracleSqlEngine
 	log       log.Logger
 }
 
@@ -28,14 +29,14 @@ func NewOracleQueryEndpoint(datasource *models.DataSource) (tsdb.TsdbQueryEndpoi
 		log: log.New("tsdb.oracle"),
 	}
 
-	endpoint.sqlEngine = &tsdb.DefaultSqlEngine{
+	endpoint.sqlEngine = &OracleSqlEngine{
 		MacroEngine: NewOracleMacroEngine(),
 	}
 
 	cnnstr := generateConnectionString(datasource)
 	endpoint.log.Debug("getEngine", "connection", cnnstr)
 
-	if err := endpoint.sqlEngine.InitEngine("oracle", datasource, cnnstr); err != nil {
+	if err := endpoint.sqlEngine.InitEngine(datasource, cnnstr); err != nil {
 		return nil, err
 	}
 
@@ -51,15 +52,17 @@ func generateConnectionString(datasource *models.DataSource) string {
 		}
 	}
 
-	sslmode := datasource.JsonData.Get("sslmode").MustString("verify-full")
-	return fmt.Sprintf("oracle://%s:%s@%s/%s?sslmode=%s", datasource.User, password, datasource.Url, datasource.Database, sslmode)
+	// Oracle connection string format (SQL Connect URL format)
+	// username/password@host[:port][/service name][:server][/instance_name]
+	// Use User/password@Url/Database where Url may contains port
+	return fmt.Sprintf("%s/%s@%s/%s", datasource.User, password, datasource.Url, datasource.Database)
 }
 
 func (e *OracleQueryEndpoint) Query(ctx context.Context, dsInfo *models.DataSource, tsdbQuery *tsdb.TsdbQuery) (*tsdb.Response, error) {
 	return e.sqlEngine.Query(ctx, dsInfo, tsdbQuery, e.transformToTimeSeries, e.transformToTable)
 }
 
-func (e OracleQueryEndpoint) transformToTable(query *tsdb.Query, rows *core.Rows, result *tsdb.QueryResult) error {
+func (e OracleQueryEndpoint) transformToTable(query *tsdb.Query, rows *sql.Rows, result *tsdb.QueryResult) error {
 
 	columnNames, err := rows.Columns()
 	if err != nil {
@@ -80,7 +83,7 @@ func (e OracleQueryEndpoint) transformToTable(query *tsdb.Query, rows *core.Rows
 
 	for ; rows.Next(); rowCount++ {
 		if rowCount > rowLimit {
-			return fmt.Errorf("PostgreSQL query row limit exceeded, limit %d", rowLimit)
+			return fmt.Errorf("Oracle query row limit exceeded, limit %d", rowLimit)
 		}
 
 		values, err := e.getTypedRowData(rows)
@@ -96,7 +99,7 @@ func (e OracleQueryEndpoint) transformToTable(query *tsdb.Query, rows *core.Rows
 	return nil
 }
 
-func (e OracleQueryEndpoint) getTypedRowData(rows *core.Rows) (tsdb.RowValues, error) {
+func (e OracleQueryEndpoint) getTypedRowData(rows *sql.Rows) (tsdb.RowValues, error) {
 
 	types, err := rows.ColumnTypes()
 	if err != nil {
@@ -138,7 +141,7 @@ func (e OracleQueryEndpoint) getTypedRowData(rows *core.Rows) (tsdb.RowValues, e
 	return values, nil
 }
 
-func (e OracleQueryEndpoint) transformToTimeSeries(query *tsdb.Query, rows *core.Rows, result *tsdb.QueryResult) error {
+func (e OracleQueryEndpoint) transformToTimeSeries(query *tsdb.Query, rows *sql.Rows, result *tsdb.QueryResult) error {
 	pointsBySeries := make(map[string]*tsdb.TimeSeries)
 	seriesByQueryOrder := list.New()
 	columnNames, err := rows.Columns()
