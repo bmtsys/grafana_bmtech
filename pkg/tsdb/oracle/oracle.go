@@ -5,7 +5,7 @@ import (
 	"context"
 	"database/sql"
 	"fmt"
-	"strconv"
+	"strings"
 	"time"
 
 	"github.com/grafana/grafana/pkg/components/null"
@@ -62,6 +62,45 @@ func (e *OracleQueryEndpoint) Query(ctx context.Context, dsInfo *models.DataSour
 	return e.sqlEngine.Query(ctx, dsInfo, tsdbQuery, e.transformToTimeSeries, e.transformToTable)
 }
 
+func (e OracleQueryEndpoint) getTypedRowData(rows *sql.Rows) (tsdb.RowValues, error) {
+	types, err := rows.ColumnTypes()
+	if err != nil {
+		return nil, err
+	}
+
+	values := make([]interface{}, len(types))
+	valuePtrs := make([]interface{}, len(types))
+
+	for i := 0; i < len(types); i++ {
+		valuePtrs[i] = &values[i]
+	}
+
+	for i, coltype := range types {
+		dbTypeName := coltype.DatabaseTypeName()
+		// fmt.Printf("value: %v type: %s \n", values[i], dbTypeName)
+		switch dbTypeName {
+		case "SQLT_NUM", "SQLT_IBFLOAT", "SQLT_IBDOUBLE":
+			values[i] = new(float64)
+		case "SQLT_CHR", "SQLT_AFC", "SQLT_VCS", "SQLT_AVC", "SQLT_RDD":
+			values[i] = new(string)
+		case "SQLT_DAT", "SQLT_TIMESTAMP", "SQLT_TIMESTAMP_TZ", "SQLT_TIMESTAMP_LTZ":
+			values[i] = new(time.Time)
+		case "SQLT_INTERVAL_DS", "SQLT_INTERVAL_YM":
+			values[i] = new(time.Duration)
+		case "SQLT_BIN", "SQLT_BLOB", "SQLT_CLOB":
+			values[i] = new(byte)
+		default:
+			values[i] = new(string)
+		}
+	}
+
+	if err := rows.Scan(values...); err != nil {
+		return nil, err
+	}
+
+	return values, nil
+}
+
 func (e OracleQueryEndpoint) transformToTable(query *tsdb.Query, rows *sql.Rows, result *tsdb.QueryResult) error {
 
 	columnNames, err := rows.Columns()
@@ -99,48 +138,6 @@ func (e OracleQueryEndpoint) transformToTable(query *tsdb.Query, rows *sql.Rows,
 	return nil
 }
 
-func (e OracleQueryEndpoint) getTypedRowData(rows *sql.Rows) (tsdb.RowValues, error) {
-
-	types, err := rows.ColumnTypes()
-	if err != nil {
-		return nil, err
-	}
-
-	values := make([]interface{}, len(types))
-	valuePtrs := make([]interface{}, len(types))
-
-	for i := 0; i < len(types); i++ {
-		valuePtrs[i] = &values[i]
-	}
-
-	if err := rows.Scan(valuePtrs...); err != nil {
-		return nil, err
-	}
-
-	// convert types not handled by lib/pq
-	// unhandled types are returned as []byte
-	for i := 0; i < len(types); i++ {
-		if value, ok := values[i].([]byte); ok == true {
-			switch types[i].DatabaseTypeName() {
-			case "NUMERIC":
-				if v, err := strconv.ParseFloat(string(value), 64); err == nil {
-					values[i] = v
-				} else {
-					e.log.Debug("Rows", "Error converting numeric to float", value)
-				}
-			case "UNKNOWN", "CIDR", "INET", "MACADDR":
-				// char literals have type UNKNOWN
-				values[i] = string(value)
-			default:
-				e.log.Debug("Rows", "Unknown database type", types[i].DatabaseTypeName(), "value", value)
-				values[i] = string(value)
-			}
-		}
-	}
-
-	return values, nil
-}
-
 func (e OracleQueryEndpoint) transformToTimeSeries(query *tsdb.Query, rows *sql.Rows, result *tsdb.QueryResult) error {
 	pointsBySeries := make(map[string]*tsdb.TimeSeries)
 	seriesByQueryOrder := list.New()
@@ -157,10 +154,10 @@ func (e OracleQueryEndpoint) transformToTimeSeries(query *tsdb.Query, rows *sql.
 
 	// check columns of resultset
 	for i, col := range columnNames {
-		switch col {
-		case "time":
+		switch strings.ToUpper(col) {
+		case "TIME":
 			timeIndex = i
-		case "metric":
+		case "METRIC":
 			metricIndex = i
 		}
 	}
@@ -175,7 +172,7 @@ func (e OracleQueryEndpoint) transformToTimeSeries(query *tsdb.Query, rows *sql.
 		var metric string
 
 		if rowCount > rowLimit {
-			return fmt.Errorf("PostgreSQL query row limit exceeded, limit %d", rowLimit)
+			return fmt.Errorf("Oracle query row limit exceeded, limit %d", rowLimit)
 		}
 
 		values, err := e.getTypedRowData(rows)
@@ -188,16 +185,20 @@ func (e OracleQueryEndpoint) transformToTimeSeries(query *tsdb.Query, rows *sql.
 			timestamp = float64(columnValue * 1000)
 		case float64:
 			timestamp = columnValue * 1000
-		case time.Time:
+		case *time.Time:
 			timestamp = float64(columnValue.Unix() * 1000)
 		default:
 			return fmt.Errorf("Invalid type for column time, must be of type timestamp or unix timestamp")
 		}
 
 		if metricIndex >= 0 {
-			if columnValue, ok := values[metricIndex].(string); ok == true {
-				metric = columnValue
-			} else {
+			metricUntyped := values[metricIndex]
+			switch columnMetric := metricUntyped.(type) {
+			case string:
+				metric = columnMetric
+			case *string:
+				metric = *columnMetric
+			default:
 				return fmt.Errorf("Column metric must be of type char,varchar or text")
 			}
 		}
@@ -210,8 +211,12 @@ func (e OracleQueryEndpoint) transformToTimeSeries(query *tsdb.Query, rows *sql.
 			switch columnValue := values[i].(type) {
 			case int64:
 				value = null.FloatFrom(float64(columnValue))
+			case *int64:
+				value = null.FloatFrom(float64(*columnValue))
 			case float64:
 				value = null.FloatFrom(columnValue)
+			case *float64:
+				value = null.FloatFrom(*columnValue)
 			case nil:
 				value.Valid = false
 			default:
