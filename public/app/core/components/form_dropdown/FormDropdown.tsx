@@ -1,11 +1,8 @@
 import React from 'react';
-// import ReactDOM from 'react-dom';
 import Select from 'react-select';
 import { AsyncCreatable } from 'react-select';
 import _ from 'lodash';
 import $ from 'jquery';
-import 'react-select/scss/default.scss';
-import { react2AngularDirective } from 'app/core/utils/react2angular';
 
 const NULL_VALUE_PLACEHOLDER = 'default';
 const LABEL_KEY = 'text';
@@ -44,8 +41,6 @@ export class FormDropdown extends React.Component<IProps, any> {
 
     this.loadOptionsInternal = this.loadOptionsInternal.bind(this);
     this.onChangeInternal = this.onChangeInternal.bind(this);
-    this.onOpen = this.onOpen.bind(this);
-    this.onClose = this.onClose.bind(this);
     this.setSelectElement = this.setSelectElement.bind(this);
     this.valueRenderer = this.valueRenderer.bind(this);
   }
@@ -71,20 +66,6 @@ export class FormDropdown extends React.Component<IProps, any> {
     } else {
       return null;
     }
-  }
-
-  getValueLabel() {
-    return this.selectControl.find('.Select-value-label');
-  }
-
-  onOpen() {
-    // Clear input label
-    this.getValueLabel().text("");
-  }
-
-  onClose() {
-    // Set cleared input label back to current value
-    this.getValueLabel().text(this.state.value.value);
   }
 
   // Set label text for custom values instead of 'Create option "{label}"'
@@ -126,8 +107,6 @@ export class FormDropdown extends React.Component<IProps, any> {
       valueKey: VALUE_KEY,
       placeholder: NULL_VALUE_PLACEHOLDER,
       onChange: this.onChangeInternal,
-      onOpen: this.onOpen,
-      onClose: this.onClose,
       ref: this.setSelectElement,
       valueRenderer: this.valueRenderer
     };
@@ -178,15 +157,3 @@ function convertToOption(value) {
   option[LABEL_KEY] = value;
   return option;
 }
-
-react2AngularDirective('gfFormDropdownReact', FormDropdown, [
-  'value',
-  'options',
-  'cssClass',
-  'labelMode',
-  'allowCustom',
-  'lookupText',
-  'cache',
-  ['getOptions', { watchDepth: 'reference', wrapApply: true }],
-  ['onChange', { watchDepth: 'reference', wrapApply: true }],
-]);
