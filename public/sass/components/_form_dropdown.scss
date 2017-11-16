@@ -1,4 +1,12 @@
-// @import "react-select/scss/default.scss";
+
+$select-input-height: 35px;
+$select-menu-max-height: 300px;
+$select-item-font-size: $font-size-base;
+$select-item-bg: $dropdownBackground;
+$select-item-fg: $input-color;
+$select-option-bg: $dropdownBackground;
+$select-option-color: $input-color;
+
 @import "../../../node_modules/react-select/scss/default.scss";
 
 @mixin select-control() {
@@ -16,90 +24,74 @@
 
 .gf-form-dropdown-react {
   padding: 0px;
-  &.gf-form-label {
-    .Select {
-      .Select-control {
-        @include select-control();
-        font-size: $font-size-sm;
-        color: $input-color;
-        background-color: $input-label-bg; // padding: $input-padding-y $input-padding-x;
-        flex-shrink: 0;
-        display: block;
-        border: $input-btn-border-width solid transparent;
-      }
-      &.is-focused>.Select-control {
-        background-color: $input-bg;
-        @include select-control-focus();
-      }
-      &.is-focused:not(.is-open)>.Select-control,
-      &.is-focused:not(.is-open).is-pseudo-focused>.Select-control {
-        background-color: $input-label-bg;
-        border: none;
-        box-shadow: none;
-      }
-      &.has-value.Select--single>.Select-control .Select-value,
-      &.has-value.is-pseudo-focused.Select--single>.Select-control .Select-value {
-        .Select-value-label {
-          color: $input-color;
-        }
-      }
-    }
-  }
-  &.gf-form-input {
-    overflow: visible;
-    .Select {
-      .Select-control {
-        @include select-control();
-        font-size: $font-size-base;
-        background-color: $input-bg;
-        color: $input-color;
-        border: $input-btn-border-width solid $input-border-color;
-      }
-      &.is-focused>.Select-control {
-        @include select-control-focus();
-      }
-      &.is-focused:not(.is-open)>.Select-control {
-        @include box-shadow($input-box-shadow);
-      }
-      &.has-value.Select--single>.Select-control .Select-value,
-      &.has-value.is-pseudo-focused.Select--single>.Select-control .Select-value {
-        .Select-value-label {
-          color: $input-color;
-        }
-      }
-    }
-  }
-  $select-menu-max-height: 300px;
-  .Select-menu-outer {
-    font-size: $font-size-sm;
-    margin: 2px 0 0;
+}
+
+.Select {
+  &.is-focused > .Select-control {
     background-color: $input-bg;
-    border: 1px solid $dropdownBorder;
-    @include border-radius($input-border-radius-sm);
-    max-height: $select-menu-max-height;
-    overflow-y: auto;
+    @include select-control-focus();
   }
-  .Select-menu {
-    max-height: ($select-menu-max-height - 2px);
-    overflow-y: auto;
+  &.is-focused:not(.is-open)>.Select-control,
+  &.is-focused:not(.is-open).is-pseudo-focused>.Select-control {
+    background-color: $input-label-bg;
+    border: none;
+    box-shadow: none;
   }
-  .Select-option {
-    background-color: $dropdownBackground;
-    color: $input-color;
-    padding: 3px 20px 3px 15px;
-    &:last-child {
-      @include border-radius($input-border-radius-sm);
-    }
-    &.is-selected {
-      background-color: $dropdownLinkBackgroundHover;
-      color: $dropdownLinkColorHover;
-    }
-    &.is-focused {
-      background-color: $dropdownLinkBackgroundHover;
-      color: $dropdownLinkColorHover;
-    }
-    &.is-disabled {
-      color: $gray-2;
+  &.has-value.Select--single>.Select-control .Select-value,
+  &.has-value.is-pseudo-focused.Select--single>.Select-control .Select-value {
+    .Select-value-label {
+      color: $input-color;
     }
   }
 }
+
+.gf-form-label {
+  .Select-control {
+    @include select-control();
+    font-size: $font-size-sm;
+    color: $input-color;
+    background-color: $input-label-bg; // padding: $input-padding-y $input-padding-x;
+    display: block;
+    border: $input-btn-border-width solid transparent;
+  }
+
+}
+
+.gf-form-input {
+  overflow: visible;
+
+  .Select-control {
+    @include select-control();
+    background-color: $input-bg;
+    color: $input-color;
+    border: $input-btn-border-width solid $input-border-color;
+  }
+}
+
+
+.Select-menu-outer {
+  margin: 2px 0 0;
+  border: 1px solid $dropdownBorder;
+  background: $dropdownBackground;
+  @include border-radius($input-border-radius-sm);
+}
+
+.Select-option {
+  font-size: $font-size-sm;
+  padding: 3px 20px 3px 15px;
+  &:last-child {
+    @include border-radius($input-border-radius-sm);
+  }
+  &.is-selected {
+    background-color: $dropdownLinkBackgroundHover;
+    color: $dropdownLinkColorHover;
+  }
+  &.is-focused {
+    background-color: $dropdownLinkBackgroundHover;
+    color: $dropdownLinkColorHover;
+  }
+  &.is-disabled {
+    color: $gray-2;
+  }
+}
+
