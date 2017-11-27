@@ -87,6 +87,14 @@ command line in the init.d script or the systemd service file.  It can
 be overridden in the configuration file or in the default environment variable
 file.
 
+### plugins
+
+Directory where grafana will automatically scan and look for plugins
+
+### datasources
+
+Config files containing datasources that will be configured at startup
+
 ## [server]
 
 ### http_addr
@@ -616,6 +624,12 @@ Analytics ID here. By default this feature is disabled.
 
 <hr />
 
+## [dashboards]
+
+### versions_to_keep (introduced in v5.0)
+
+Number dashboard versions to keep (per dashboard). Default: 20, Minimum: 1.
+
 ## [dashboards.json]
 
 If you have a system that automatically builds dashboards as json files you can enable this feature to have the
@@ -676,7 +690,7 @@ Ex `filters = sqlstore:debug`
 ## [metrics]
 
 ### enabled
-Enable metrics reporting. defaults true. Available via HTTP API `/api/metrics`.
+Enable metrics reporting. defaults true. Available via HTTP API `/metrics`.
 
 ### interval_seconds
 
@@ -763,6 +777,9 @@ Service Account should have "Storage Object Writer" role.
 
 ### bucket name
 Bucket Name on Google Cloud Storage.
+
+### path
+Optional extra path inside bucket
 
 ## [alerting]
 

@@ -18,14 +18,6 @@
 				getOptions="ctrl.getOptionsReact()"
 				onChange="ctrl.datasourceChangedReact()">
 			</gf-form-dropdown-react>
-			<gf-form-dropdown-react value="ctrl.panelDsValue"
-				getOptions="ctrl.getOptionsReact()"
-				onChange="ctrl.datasourceChangedReact()">
-			</gf-form-dropdown-react>
-			<gf-form-dropdown-react value="ctrl.panelDsValue" label-mode="true" allow-custom="true"
-				getOptions="ctrl.getOptionsReact()"
-				onChange="ctrl.datasourceChangedReact()">
-			</gf-form-dropdown-react>
 		</div>
 
 		<div class="gf-form gf-form--grow">
@@ -107,8 +99,7 @@
 			<button class="btn btn-secondary gf-form-btn" ng-click="ctrl.addQuery()" ng-hide="ctrl.datasourceInstance.meta.mixed">
 				Add Query
 			</button>
-
-			<div class="dropdown" ng-if="ctrl.datasourceInstance.meta.mixed">
+			<div class="dropdown" ng-if="ctrl.current.meta.mixed">
 				<gf-form-dropdown model="ctrl.addQueryDropdown" get-options="ctrl.getOptions(false)" on-change="ctrl.addMixedQuery($option)">
 				</gf-form-dropdown>
 			</div>

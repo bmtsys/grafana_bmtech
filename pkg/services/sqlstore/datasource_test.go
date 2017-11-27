@@ -11,7 +11,7 @@ import (
 	"github.com/grafana/grafana/pkg/services/sqlstore/sqlutil"
 )
 
-func InitTestDB(t *testing.T) {
+func InitTestDB(t *testing.T) *xorm.Engine {
 	x, err := xorm.NewEngine(sqlutil.TestDB_Sqlite3.DriverName, sqlutil.TestDB_Sqlite3.ConnStr)
 	//x, err := xorm.NewEngine(sqlutil.TestDB_Mysql.DriverName, sqlutil.TestDB_Mysql.ConnStr)
 	//x, err := xorm.NewEngine(sqlutil.TestDB_Postgres.DriverName, sqlutil.TestDB_Postgres.ConnStr)
@@ -27,6 +27,8 @@ func InitTestDB(t *testing.T) {
 	if err := SetEngine(x); err != nil {
 		t.Fatal(err)
 	}
+
+	return x
 }
 
 type Test struct {
@@ -45,6 +47,7 @@ func TestDataAccess(t *testing.T) {
 				Access:   m.DS_ACCESS_DIRECT,
 				Url:      "http://test",
 				Database: "site",
+				ReadOnly: true,
 			})
 
 			So(err, ShouldBeNil)
@@ -59,6 +62,7 @@ func TestDataAccess(t *testing.T) {
 
 			So(ds.OrgId, ShouldEqual, 10)
 			So(ds.Database, ShouldEqual, "site")
+			So(ds.ReadOnly, ShouldBeTrue)
 		})
 
 		Convey("Given a datasource", func() {

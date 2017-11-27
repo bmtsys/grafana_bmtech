@@ -4,7 +4,7 @@ import _ from 'lodash';
 import moment from 'moment';
 import angular from 'angular';
 import {appEvents, NavModel} from 'app/core/core';
-import {DashboardModel} from '../model';
+import {DashboardModel} from '../dashboard_model';
 
 export class DashNavCtrl {
   dashboard: DashboardModel;
@@ -49,14 +49,9 @@ export class DashNavCtrl {
     }
 
     starDashboard() {
-      if (this.dashboard.meta.isStarred) {
-        return this.backendSrv.delete('/api/user/stars/dashboard/' + this.dashboard.id).then(() =>  {
-          this.dashboard.meta.isStarred = false;
-        });
-      }
-
-      this.backendSrv.post('/api/user/stars/dashboard/' + this.dashboard.id).then(() => {
-        this.dashboard.meta.isStarred = true;
+      this.dashboardSrv.starDashboard(this.dashboard.id, this.dashboard.meta.isStarred)
+        .then(newState => {
+          this.dashboard.meta.isStarred = newState;
       });
     }
 
@@ -93,16 +88,16 @@ export class DashNavCtrl {
     }
 
     deleteDashboard() {
-      var confirmText = "";
+      var confirmText = '';
       var text2 = this.dashboard.title;
-      var alerts = this.dashboard.rows.reduce((memo, row) => {
-        memo += row.panels.filter(panel => panel.alert).length;
-        return memo;
-      }, 0);
+
+      const alerts = _.sumBy(this.dashboard.panels, panel => {
+         return panel.alert ? 1 : 0;
+      });
 
       if (alerts > 0) {
         confirmText = 'DELETE';
-        text2 = `This dashboad contains ${alerts} alerts. Deleting this dashboad will also delete those alerts`;
+        text2 = `This dashboard contains ${alerts} alerts. Deleting this dashboard will also delete those alerts`;
       }
 
       appEvents.emit('confirm-modal', {
@@ -138,8 +133,25 @@ export class DashNavCtrl {
       });
     }
 
+    onFolderChange(folderId) {
+      this.dashboard.folderId = folderId;
+    }
+
     showSearch() {
       this.$rootScope.appEvent('show-dash-search');
+    }
+
+    addPanel() {
+      if (this.dashboard.panels.length > 0 && this.dashboard.panels[0].type === 'add-panel') {
+        this.dashboard.removePanel(this.dashboard.panels[0]);
+        return;
+      }
+
+      this.dashboard.addPanel({
+        type: 'add-panel',
+        gridPos: {x: 0, y: 0, w: 12, h: 9},
+        title: 'New Graph',
+      });
     }
 
     navItemClicked(navItem, evt) {

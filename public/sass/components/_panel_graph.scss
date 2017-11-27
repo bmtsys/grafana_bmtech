@@ -139,7 +139,7 @@
   }
 
   .graph-legend-series:nth-child(odd) {
-    background-color: $grafanaListAccent;
+    background: $table-bg-accent;
   }
 
   .graph-legend-value {
@@ -280,7 +280,7 @@
 
   .graph-annotation__header {
     background-color: $popover-border-color;
-    padding: 0.40rem 0.65rem;
+    padding: 6px 10px;
     display: flex;
   }
 

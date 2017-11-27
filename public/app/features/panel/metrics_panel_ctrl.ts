@@ -11,7 +11,6 @@ import {metricsTabDirective} from './metrics_tab';
 
 class MetricsPanelCtrl extends PanelCtrl {
   scope: any;
-  loading: boolean;
   datasource: any;
   datasourceName: any;
   $q: any;
@@ -139,7 +138,7 @@ class MetricsPanelCtrl extends PanelCtrl {
     if (this.panel.maxDataPoints) {
       this.resolution = this.panel.maxDataPoints;
     } else {
-      this.resolution = Math.ceil($(window).width() * (this.panel.span / 12));
+      this.resolution = Math.ceil($(window).width() * (this.panel.gridPos.w / 24));
     }
 
     this.calculateInterval();
