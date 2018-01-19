@@ -1,5 +1,5 @@
 import React from 'react';
-import { sortedColors } from 'app/core/utils/colors';
+import { getSortedPalette } from 'app/core/utils/colors';
 
 export interface IProps {
   color: string;
@@ -11,7 +11,7 @@ export class ColorPalette extends React.Component<IProps, any> {
 
   constructor(props) {
     super(props);
-    this.paletteColors = sortedColors;
+    this.paletteColors = getSortedPalette('classic');
     this.onColorSelect = this.onColorSelect.bind(this);
   }
 
@@ -29,7 +29,8 @@ export class ColorPalette extends React.Component<IProps, any> {
           key={paletteColor}
           className={'pointer fa ' + cssClass}
           style={{ color: paletteColor }}
-          onClick={this.onColorSelect(paletteColor)}>
+          onClick={this.onColorSelect(paletteColor)}
+        >
           &nbsp;
         </i>
       );
@@ -41,4 +42,3 @@ export class ColorPalette extends React.Component<IProps, any> {
     );
   }
 }
-

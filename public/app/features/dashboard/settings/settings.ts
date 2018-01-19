@@ -3,6 +3,7 @@ import { DashboardModel } from '../dashboard_model';
 import $ from 'jquery';
 import _ from 'lodash';
 import config from 'app/core/config';
+import { colorPalettes } from 'app/core/utils/colors';
 
 export class SettingsCtrl {
   dashboard: DashboardModel;
@@ -13,6 +14,8 @@ export class SettingsCtrl {
   canSaveAs: boolean;
   canSave: boolean;
   canDelete: boolean;
+  readOnly: boolean;
+  colorPalettes: any;
   sections: any[];
 
   /** @ngInject */
@@ -29,11 +32,17 @@ export class SettingsCtrl {
     this.canSaveAs = contextSrv.isEditor;
     this.canSave = this.dashboard.meta.canSave;
     this.canDelete = this.dashboard.meta.canSave;
+    this.readOnly = !this.dashboard.editable;
+    this.colorPalettes = colorPalettes;
 
     this.buildSectionList();
     this.onRouteUpdated();
 
     $rootScope.onAppEvent('$routeUpdate', this.onRouteUpdated.bind(this), $scope);
+  }
+
+  readOnlyChanged() {
+    this.dashboard.editable = !this.readOnly;
   }
 
   buildSectionList() {

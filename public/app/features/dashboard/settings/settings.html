@@ -31,15 +31,15 @@
 
 	<div class="gf-form-group">
 		<div class="gf-form">
-			<label class="gf-form-label width-7">Name</label>
+			<label class="gf-form-label width-8">Name</label>
 			<input type="text" class="gf-form-input width-30" ng-model='ctrl.dashboard.title'></input>
 		</div>
 		<div class="gf-form">
-			<label class="gf-form-label width-7">Description</label>
+			<label class="gf-form-label width-8">Description</label>
 			<input type="text" class="gf-form-input width-30" ng-model='ctrl.dashboard.description'></input>
 		</div>
 		<div class="gf-form">
-			<label class="gf-form-label width-7">
+			<label class="gf-form-label width-8">
 				Tags
 				<info-popover mode="right-normal">Press enter to add a tag</info-popover>
 			</label>
@@ -51,26 +51,39 @@
 									 on-change="ctrl.onFolderChange($folder)"
 									 enable-create-new="true"
 									 is-valid-selection="true"
-									 label-class="width-7">
+									 label-class="width-8">
 		</folder-picker>
-		<gf-form-switch class="gf-form" label="Editable" tooltip="Uncheck, then save and reload to disable all dashboard editing" checked="ctrl.dashboard.editable" label-class="width-7">
+		<gf-form-switch class="gf-form" label="Read Only" tooltip="Check, then save and reload to disable all dashboard
+			editing" checked="ctrl.readOnly" label-class="width-8" on-change="ctrl.readOnlyChanged()">
 		</gf-form-switch>
 	</div>
 
-	<gf-time-picker-settings dashboard="ctrl.dashboard"></gf-time-picker-settings>
+	<div class="gf-form-group">
+		<h5 class="section-heading">Display</h5>
+		<div class="gf-form">
+			<label class="gf-form-label width-9">Color palette</label>
+			<div class="gf-form-select-wrapper gf-form-select-wrapper--has-help-icon width-12">
+				<select class="gf-form-input" ng-model="ctrl.dashboard.colorPalette" ng-options="k as v.name for (k, v) in
+					ctrl.colorPalettes"></select>
+				<info-popover mode="right-absolute">
+					Will change the default colors and colors available in the color picker. Will not change
+					manually set colors.
+				</info-popover>
+			</div>
+		</div>
 
-	<h5 class="section-heading">Panel Options</h5>
-	<div class="gf-form">
-		<label class="gf-form-label width-11">
-			Graph Tooltip
-			<info-popover mode="right-normal">
-				Cycle between options using Shortcut: CTRL+O or CMD+O
-			</info-popover>
-		</label>
-		<div class="gf-form-select-wrapper">
-			<select ng-model="ctrl.dashboard.graphTooltip" class='gf-form-input' ng-options="f.value as f.text for f in [{value: 0, text: 'Default'}, {value: 1, text: 'Shared crosshair'},{value: 2, text: 'Shared Tooltip'}]"></select>
+		<div class="gf-form">
+			<label class="gf-form-label width-9">Graph Tooltip</label>
+			<div class="gf-form-select-wrapper gf-form-select-wrapper--has-help-icon width-12">
+				<select ng-model="ctrl.dashboard.graphTooltip" class='gf-form-input' ng-options="f.value as f.text for f in [{value: 0, text: 'Default'}, {value: 1, text: 'Shared crosshair'},{value: 2, text: 'Shared Tooltip'}]"></select>
+				<info-popover mode="right-absolute">
+					Cycle between options using Shortcut: CTRL+O or CMD+O
+				</info-popover>
+			</div>
 		</div>
 	</div>
+
+	<gf-time-picker-settings dashboard="ctrl.dashboard"></gf-time-picker-settings>
 </div>
 
 <div class="dashboard-settings__content" ng-if="ctrl.viewId === 'annotations'" ng-include="'public/app/features/annotations/partials/editor.html'">

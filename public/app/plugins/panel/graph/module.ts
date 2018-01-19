@@ -118,7 +118,7 @@ class GraphCtrl extends MetricsPanelCtrl {
     _.defaults(this.panel.legend, this.panelDefaults.legend);
     _.defaults(this.panel.xaxis, this.panelDefaults.xaxis);
 
-    this.processor = new DataProcessor(this.panel);
+    this.processor = new DataProcessor(this.panel, this.dashboard);
 
     this.events.on('render', this.onRender.bind(this));
     this.events.on('data-received', this.onDataReceived.bind(this));

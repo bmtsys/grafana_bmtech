@@ -1,9 +1,9 @@
 import _ from 'lodash';
 import TimeSeries from 'app/core/time_series2';
-import colors from 'app/core/utils/colors';
+import { getColorPalette } from 'app/core/utils/colors';
 
 export class DataProcessor {
-  constructor(private panel) {}
+  constructor(private panel, private dashboard) {}
 
   getSeriesList(options) {
     if (!options.dataList || options.dataList.length === 0) {
@@ -100,6 +100,7 @@ export class DataProcessor {
     var datapoints = seriesData.datapoints || [];
     var alias = seriesData.target;
 
+    let colors = getColorPalette(this.dashboard.colorPalette);
     var colorIndex = index % colors.length;
     var color = this.panel.aliasColors[alias] || colors[colorIndex];
 

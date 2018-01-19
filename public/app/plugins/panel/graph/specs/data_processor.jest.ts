@@ -5,7 +5,7 @@ describe('Graph DataProcessor', function() {
     xaxis: {},
   };
 
-  var processor = new DataProcessor(panel);
+  var processor = new DataProcessor(panel, { colorPalette: 'classic' });
 
   describe('Given default xaxis options and query that returns docs', () => {
     beforeEach(() => {
