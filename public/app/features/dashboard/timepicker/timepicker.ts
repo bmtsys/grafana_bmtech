@@ -124,6 +124,7 @@ export class TimePickerCtrl {
     }, 100);
   }
 
+  //prevents close when clicking in padding area in chrome
   preventClose() {
     this.ignoreClose = true;
 

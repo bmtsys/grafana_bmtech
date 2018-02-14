@@ -1,3 +1,12 @@
+.timepicker-backdrop {
+  position: fixed;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  top: $navbarHeight;
+  z-index: $zindex-modal-backdrop;
+}
+
 .timepicker-timestring {
   font-weight: normal;
 }
@@ -20,6 +29,7 @@
   background-color: $page-bg;
   border-radius: 0 0 0 4px;
   box-shadow: $search-shadow;
+  z-index: ($zindex-modal-backdrop + 10);
 }
 
 .gf-timepicker-absolute-section {
@@ -103,10 +113,10 @@
 }
 
 .fa-chevron-left::before {
-  content: "\f053";
+  content: '\f053';
 }
 .fa-chevron-right::before {
-  content: "\f054";
+  content: '\f054';
 }
 
 .glyphicon-chevron-right {
