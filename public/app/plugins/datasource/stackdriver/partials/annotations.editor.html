@@ -1,13 +1,27 @@
-<div class="gf-form-group">
+<div class="gf-form-inline">
   <div class="gf-form">
-    <span class="gf-form-label width-12">Graphite query</span>
-    <input type="text" class="gf-form-input" ng-model='ctrl.annotation.target' placeholder="Example: statsd.application.counters.*.count"></input>
+    <span class="gf-form-label width-9">Resource type</span>
+    <gf-form-dropdown model="ctrl.annotation.target.metricService" get-options="ctrl.getMetricServices()" class="min-width-20"
+      disabled type="text" allow-custom="true" lookup-text="true" css-class="min-width-12" on-change="ctrl.onResourceTypeChange(ctrl.annotation.target.metricService)"></gf-form-dropdown>
   </div>
-
-	<h5 class="section-heading">Or</h5>
-
   <div class="gf-form">
-    <span class="gf-form-label width-12">Graphite events tags</span>
-    <input type="text" class="gf-form-input" ng-model='ctrl.annotation.tags' placeholder="Example: event_tag_name"></input>
+    <span class="gf-form-label width-9">Metric</span>
+    <gf-form-dropdown model="ctrl.annotation.target.metricType" title="Tooltip" get-options="ctrl.metrics" class="min-width-20"
+      disabled type="text" allow-custom="true" lookup-text="true" css-class="min-width-12" on-change="ctrl.onMetricTypeChange()"></gf-form-dropdown>
+  </div>
+  <div class="gf-form gf-form--grow">
+    <div class="gf-form-label gf-form-label--grow"></div>
   </div>
 </div>
+
+<!-- <div class="gf-form-inline">
+  <div class="gf-form">
+    <span class="gf-form-label query-keyword width-9">Filter</span>
+    <div class="gf-form" ng-repeat="segment in ctrl.filterSegments">
+      <metric-segment segment="segment" get-options="ctrl.getFilters(segment, $index)" on-change="ctrl.filterSegmentUpdated(segment, $index)"></metric-segment>
+    </div>
+  </div>
+  <div class="gf-form gf-form--grow">
+    <div class="gf-form-label gf-form-label--grow"></div>
+  </div>
+</div> -->

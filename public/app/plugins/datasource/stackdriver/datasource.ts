@@ -106,6 +106,18 @@ export default class StackdriverDatasource {
     return { data: result };
   }
 
+  annotationQuery(options) {
+    return [
+      {
+        annotation: options.annotation,
+        title: 'Network outage',
+        time: 1537918559000,
+        text: 'Network issues',
+        tags: '',
+      },
+    ];
+  }
+
   testDatasource() {
     const path = `v3/projects/${this.projectName}/metricDescriptors`;
     return this.doRequest(`${this.baseUrl}${path}`)
