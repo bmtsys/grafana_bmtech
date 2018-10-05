@@ -14,7 +14,7 @@ import { FolderDTO, FolderState, FolderInfo } from './folders';
 import { DashboardState } from './dashboard';
 import { DashboardAcl, OrgRole, PermissionLevel } from './acl';
 import { ApiKey, ApiKeysState, NewApiKey } from './apiKeys';
-import { User } from './user';
+import { Invitee, OrgUser, User, UsersState } from './user';
 import { DataSource, DataSourcesState } from './datasources';
 import { PluginMeta, Plugin, PluginsState } from './plugins';
 
@@ -52,10 +52,13 @@ export {
   ApiKey,
   ApiKeysState,
   NewApiKey,
-  User,
   Plugin,
   PluginsState,
   DataSourcesState,
+  Invitee,
+  OrgUser,
+  User,
+  UsersState,
 };
 
 export interface StoreState {
@@ -67,4 +70,6 @@ export interface StoreState {
   manageDashboards: ManageDashboardState;
   folder: FolderState;
   dashboard: DashboardState;
+  dataSources: DataSourcesState;
+  users: UsersState;
 }

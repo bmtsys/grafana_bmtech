@@ -11,6 +11,7 @@ import { BackendSrv, setBackendSrv } from 'app/core/services/backend_srv';
 import { DatasourceSrv } from 'app/features/plugins/datasource_srv';
 import { configureStore } from 'app/store/configureStore';
 import { SearchSrv, setSearchSrv } from '../services/search_srv';
+import { AngularLoader, setAngularLoader } from 'app/core/services/AngularLoader';
 
 export class GrafanaCtrl {
   /** @ngInject */
@@ -24,12 +25,14 @@ export class GrafanaCtrl {
     bridgeSrv,
     backendSrv: BackendSrv,
     searchSrv: SearchSrv,
-    datasourceSrv: DatasourceSrv
+    datasourceSrv: DatasourceSrv,
+    angularLoader: AngularLoader
   ) {
     // sets singleston instances for angular services so react components can access them
-    configureStore();
+    setAngularLoader(angularLoader);
     setBackendSrv(backendSrv);
     setSearchSrv(searchSrv);
+    configureStore();
 
     $scope.init = () => {
       $scope.contextSrv = contextSrv;
