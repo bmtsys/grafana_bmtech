@@ -10,6 +10,7 @@ import ApiKeys from 'app/features/api-keys/ApiKeysPage';
 import PluginListPage from 'app/features/plugins/PluginListPage';
 import FolderSettingsPage from 'app/features/folders/FolderSettingsPage';
 import FolderPermissions from 'app/features/folders/FolderPermissions';
+import FolderDashboardsPage from 'app/features/folders/FolderDashboardsPage';
 import DataSourcesListPage from 'app/features/datasources/DataSourcesListPage';
 import UsersListPage from 'app/features/users/UsersListPage';
 
@@ -110,11 +111,18 @@ export function setupAngularRoutes($routeProvider, $locationProvider) {
       },
     })
     .when('/dashboards/f/:uid/:slug', {
-      templateUrl: 'public/app/features/dashboard/partials/folder_dashboards.html',
-      controller: 'FolderDashboardsCtrl',
-      controllerAs: 'ctrl',
+      template: '<react-container />',
+      resolve: {
+        component: () => FolderDashboardsPage,
+      },
     })
     .when('/dashboards/f/:uid', {
+      template: '<react-container />',
+      resolve: {
+        component: () => FolderDashboardsPage,
+      },
+    })
+    .when('/dashboards/f/:uid/old', {
       templateUrl: 'public/app/features/dashboard/partials/folder_dashboards.html',
       controller: 'FolderDashboardsCtrl',
       controllerAs: 'ctrl',
