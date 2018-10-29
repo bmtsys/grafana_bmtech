@@ -1,5 +1,5 @@
 ﻿export interface Modal {
-  name: string;
+  variant: string;
   attributes?: any;
 }
 

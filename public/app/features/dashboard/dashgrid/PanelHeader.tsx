@@ -7,8 +7,7 @@ import { updateLocation } from 'app/core/actions';
 import { StoreState } from 'app/types';
 import { connectWithStore } from 'app/core/utils/connectWithReduxStore';
 import { addModal, clearModal } from 'app/core/actions';
-import ModalPortal from 'app/core/components/Modals/ModalPortal';
-import { SampleModalContentForPOC } from './SampleModalContentForPOC';
+import { ModalVariants } from 'app/core/components/Modals/ModalVariants';
 
 interface PanelHeaderProps {
   panel: PanelModel;
@@ -17,8 +16,6 @@ interface PanelHeaderProps {
   clearModal: typeof clearModal;
   isMyModal: boolean;
 }
-
-const ModalName = 'POC_MODAL';
 
 export class PanelHeader extends React.Component<PanelHeaderProps, any> {
   onEditPanel = () => {
@@ -47,9 +44,31 @@ export class PanelHeader extends React.Component<PanelHeaderProps, any> {
 
   onAddModal = () => {
     this.props.addModal({
-      name: ModalName,
+      variant: ModalVariants.DashboardShareModal,
       attributes: {
-        onClose: () => {},
+        onCloseModal: this.onCloseModal,
+        title: 'Modal title',
+        icon: 'fa fa-share-square-o',
+      },
+    });
+  };
+
+  onAddMultipleModals = () => {
+    this.props.addModal({
+      variant: ModalVariants.DashboardShareModal,
+      attributes: {
+        onCloseModal: this.onCloseModal,
+        title: 'Modal title',
+        icon: 'fa fa-share-square-o',
+      },
+    });
+
+    this.props.addModal({
+      variant: ModalVariants.RemoveModal,
+      attributes: {
+        onCloseModal: this.onCloseModal,
+        title: "There's a modal behind this one!",
+        icon: 'fa fa-share-square-o',
       },
     });
   };
@@ -62,7 +81,6 @@ export class PanelHeader extends React.Component<PanelHeaderProps, any> {
     const isFullscreen = false;
     const isLoading = false;
     const panelHeaderClass = classNames({ 'panel-header': true, 'grid-drag-handle': !isFullscreen });
-    const { isMyModal } = this.props;
 
     return [
       <div className={panelHeaderClass}>
@@ -80,6 +98,9 @@ export class PanelHeader extends React.Component<PanelHeaderProps, any> {
         <div className="panel-title-container">
           <button className="btn btn-primary" onClick={this.onAddModal}>
             Open modal POC
+          </button>
+          <button className="btn btn-primary" onClick={this.onAddMultipleModals}>
+            Open multiple modals POC
           </button>
           <span className="panel-title">
             <span className="icon-gf panel-alert-icon" />
@@ -105,23 +126,12 @@ export class PanelHeader extends React.Component<PanelHeaderProps, any> {
           </span>
         </div>
       </div>,
-      isMyModal ? (
-        <ModalPortal onCloseModal={this.onCloseModal} title="Modal title" icon="fa fa-share-square-o">
-          <SampleModalContentForPOC /> {/* This could be something like <ShareDashboardModal /> or similar */}
-        </ModalPortal>
-      ) : null,
     ];
   }
 }
 
 const mapStateToProps = (state: StoreState) => {
-  const modals = state.modals.modals;
-
-  return {
-    modals: modals,
-    currModal: modals.length > 0 ? modals[modals.length - 1] : null,
-    isMyModal: modals.length > 0 ? modals[modals.length - 1].name === ModalName : false,
-  };
+  return {};
 };
 
 const mapDispatchToProps = {
