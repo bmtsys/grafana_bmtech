@@ -28,6 +28,7 @@ import {
   AppNotificationsState,
   AppNotificationTimeout,
 } from './appNotifications';
+import { Modal, ModalsState } from './modals';
 
 export {
   Team,
@@ -80,6 +81,8 @@ export {
   AppNotificationsState,
   AppNotificationSeverity,
   AppNotificationTimeout,
+  Modal,
+  ModalsState,
 };
 
 export interface StoreState {
@@ -93,4 +96,5 @@ export interface StoreState {
   dataSources: DataSourcesState;
   users: UsersState;
   appNotifications: AppNotificationsState;
+  modals: ModalsState;
 }
