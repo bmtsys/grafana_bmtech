@@ -218,8 +218,83 @@
 }
 
 .form-option-box__header {
-  border-bottom: 2px solid $blue-dark;
+  border-bottom: 2px solid #2b2b2b;
   padding: 5px 0px;
-  font-size: $font-size-lg;
+  font-size: $font-size-md;
   margin-bottom: 20px;
+}
+
+.edit-section {
+  position: relative;
+}
+
+.edit-section__header {
+  display: flex;
+  align-content: center;
+  align-items: center;
+  background: linear-gradient(90deg, #292a2d, black);
+  padding: 7px 30px 7px 20px;
+  box-shadow: 0 0 20px black;
+  cursor: pointer;
+}
+
+.edit-section__nr {
+  background: $blue-dark;
+  color: white;
+  border-radius: 50%;
+  height: 30px;
+  width: 30px;
+  padding: 6px 11px;
+  font-weight: $font-weight-semi-bold;
+  margin-right: 20px;
+  font-size: 15px;
+}
+
+.edit-section__selected {
+  padding: $input-padding-y $input-padding-x;
+  font-size: $font-size-md;
+  line-height: $input-line-height;
+  color: $input-color;
+  background-color: $input-bg;
+  border: $input-border;
+  border-radius: $input-border-radius;
+  display: flex;
+  align-items: center;
+  .fa  {
+    margin-left: 20px;
+    display: inline-block;
+    position: relative;
+  }
+}
+
+.edit-section__title {
+  font-size: $font-size-lg;
+  padding-right: 20px;
+  width: 150px;
+}
+
+.edit-section__expand-state {
+  text-align: right;
+  flex-grow: 1;
+}
+
+.edit-section__selected-image {
+  margin-right: 10px;
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+}
+
+.edit-section__body {
+  padding: 35px 52px 25px 66px
+}
+
+.edit-section__line {
+  position: absolute;
+  top: 40px;
+  left: 34px;
+  bottom: -11px;
+  width: 2px;
+  background: $blue-dark;
+  z-index: 1000;
 }

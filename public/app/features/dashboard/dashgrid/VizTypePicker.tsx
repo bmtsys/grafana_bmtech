@@ -9,11 +9,11 @@ import { PanelPlugin } from 'app/types/plugins';
 interface Props {
   current: PanelPlugin;
   onTypeChanged: (newType: PanelPlugin) => void;
+  isOpen: boolean;
 }
 
 interface State {
   pluginList: PanelPlugin[];
-  isOpen: boolean;
 }
 
 export class VizTypePicker extends PureComponent<Props, State> {
@@ -22,7 +22,6 @@ export class VizTypePicker extends PureComponent<Props, State> {
 
     this.state = {
       pluginList: this.getPanelPlugins(''),
-      isOpen: false,
     };
   }
 
@@ -65,40 +64,15 @@ export class VizTypePicker extends PureComponent<Props, State> {
     );
   }
 
-  onToggleOpen = () => {
-    this.setState({ isOpen: !this.state.isOpen });
-  };
-
   render() {
-    const { current } = this.props;
-    const { pluginList, isOpen } = this.state;
+    const { current, isOpen } = this.props;
+    const { pluginList } = this.state;
 
     return (
-      <div className="viz-picker">
-        <div className="viz-picker__bar">
-          <div className="gf-form-inline">
-            <div className="gf-form">
-              <label className="gf-form-label">Visualization</label>
-              <label className="gf-form-input width-10" onClick={this.onToggleOpen}>
-                <span>{current.name}</span>
-                {isOpen && <i className="fa fa-caret-down pull-right" />}
-                {!isOpen && <i className="fa fa-caret-left pull-right" />}
-              </label>
-            </div>
-            <div className="gf-form gf-form--grow">
-              <label className="gf-form-label gf-form-label--grow" />
-            </div>
-            <div className="gf-form">
-              <label className="gf-form-label">
-                <i className="fa fa-fw fa-caret-down" /> Help
-              </label>
-            </div>
-          </div>
-        </div>
-
-        <FadeIn in={isOpen} duration={300}>
+      <FadeIn in={isOpen} duration={300}>
+        <div className="viz-picker">
           <div className="cta-form">
-            <button className="cta-form__close" onClick={this.onToggleOpen}>
+            <button className="cta-form__close">
               <i className="fa fa-remove" />
             </button>
 
@@ -110,8 +84,8 @@ export class VizTypePicker extends PureComponent<Props, State> {
 
             <div className="viz-picker__items">{pluginList.map(this.renderVizPlugin)}</div>
           </div>
-        </FadeIn>
-      </div>
+        </div>
+      </FadeIn>
     );
   }
 }

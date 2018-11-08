@@ -3,6 +3,7 @@ import classNames from 'classnames';
 
 import { QueriesTab } from './QueriesTab';
 import { VizTypePicker } from './VizTypePicker';
+import { EditSection } from './EditSection';
 import CustomScrollbar from 'app/core/components/CustomScrollbar/CustomScrollbar';
 
 import { store } from 'app/store/configureStore';
@@ -25,7 +26,11 @@ interface PanelEditorTab {
   icon: string;
 }
 
-export class PanelEditor extends PureComponent<PanelEditorProps> {
+interface State {
+  showVizPicker: boolean;
+}
+
+export class PanelEditor extends PureComponent<PanelEditorProps, State> {
   tabs: PanelEditorTab[];
 
   constructor(props) {
@@ -36,6 +41,10 @@ export class PanelEditor extends PureComponent<PanelEditorProps> {
       { id: 'visualization', text: 'Visualization', icon: 'fa fa-line-chart' },
       { id: 'alert', text: 'Alert', icon: 'gicon gicon-alert' },
     ];
+
+    this.state = {
+      showVizPicker: false,
+    };
   }
 
   renderQueriesTab() {
@@ -58,12 +67,37 @@ export class PanelEditor extends PureComponent<PanelEditorProps> {
     this.forceUpdate();
   };
 
+  onToggleVizSelect = () => {
+    this.setState({ showVizPicker: !this.state.showVizPicker });
+  };
+
   renderVizTab() {
     return (
+      <EditSection
+        nr="2"
+        title="Visualization"
+        selectedText="Bar Chart"
+        selectedImage="public/app/plugins/panel/graph/img/icn-graph-panel.svg"
+        onToggleSelect={this.onToggleVizSelect}
+      >
       <div className="viz-editor">
-        <VizTypePicker current={this.props.plugin} onTypeChanged={this.props.onTypeChanged} />
+        <VizTypePicker current={this.props.plugin} onTypeChanged={this.props.onTypeChanged}
+          isOpen={this.state.showVizPicker} />
         {this.renderPanelOptions()}
       </div>
+    </EditSection>
+    );
+  }
+
+  renderAlertTab() {
+    return (
+      <EditSection
+        nr="3"
+        title="Alert Rule"
+      >
+      <div className="viz-editor">
+      </div>
+    </EditSection>
     );
   }
 
@@ -87,8 +121,8 @@ export class PanelEditor extends PureComponent<PanelEditorProps> {
   };
 
   render() {
-    return this.renderAsTabs();
-    // return this.renderAsBoxes();
+    // return this.renderAsTabs();
+    return this.renderAsBoxes();
     // const { location } = store.getState();
     // const activeTab = location.query.tab || 'queries';
     //
@@ -128,45 +162,6 @@ export class PanelEditor extends PureComponent<PanelEditorProps> {
     // );
   }
 
-  renderAsTabs() {
-    const { location } = store.getState();
-    const { panel } = this.props;
-    const activeTab = location.query.tab || 'queries';
-
-    return (
-      <div className="panel-editor-container__editor">
-        <div className="panel-editor-resizer">
-          <div className="panel-editor-resizer__handle">
-            <div className="panel-editor-resizer__handle-dots" />
-          </div>
-        </div>
-
-        <div className="tabbed-view tabbed-view--new">
-          <div className="tabbed-view-header">
-            <h3 className="tabbed-view-panel-title">{panel.title}</h3>
-
-            <ul className="gf-tabs">
-              {this.tabs.map(tab => {
-                return <OldTabItem tab={tab} activeTab={activeTab} onClick={this.onChangeTab} key={tab.id} />;
-              })}
-            </ul>
-
-            <button className="tabbed-view-close-btn" onClick={this.onClose}>
-              <i className="fa fa-remove" />
-            </button>
-          </div>
-
-          <div className="tabbed-view-body">
-            <CustomScrollbar>
-              {activeTab === 'queries' && this.renderQueriesTab()}
-              {activeTab === 'visualization' && this.renderVizTab()}
-            </CustomScrollbar>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
   renderAsBoxes() {
     const { location } = store.getState();
     const { panel } = this.props;
@@ -183,6 +178,7 @@ export class PanelEditor extends PureComponent<PanelEditorProps> {
         <CustomScrollbar>
           {this.renderQueriesTab()}
           {this.renderVizTab()}
+          {this.renderAlertTab()}
         </CustomScrollbar>
       </div>
     );

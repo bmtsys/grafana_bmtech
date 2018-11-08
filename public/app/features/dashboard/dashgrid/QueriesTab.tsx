@@ -1,10 +1,8 @@
-// Libraries
 import React, { PureComponent } from 'react';
 
-// Services & utils
 import { getAngularLoader, AngularComponent } from 'app/core/services/AngularLoader';
+import { EditSection } from './EditSection';
 
-// Types
 import { PanelModel } from '../panel_model';
 import { DashboardModel } from '../dashboard_model';
 
@@ -48,6 +46,15 @@ export class QueriesTab extends PureComponent<Props> {
   }
 
   render() {
-    return <div ref={element => (this.element = element)} className="panel-height-helper" />;
+    return (
+      <EditSection
+        nr="1"
+        title="Queries"
+        selectedText="ProductionDB"
+        selectedImage="public/app/plugins/datasource/prometheus/img/prometheus_logo.svg"
+      >
+        <div ref={element => (this.element = element)} />
+      </EditSection>
+    );
   }
 }
