@@ -74,7 +74,7 @@ export interface CompletionItemGroup {
   skipSort?: boolean;
 }
 
-interface ExploreDatasource {
+export interface ExploreDatasource {
   value: string;
   label: string;
 }

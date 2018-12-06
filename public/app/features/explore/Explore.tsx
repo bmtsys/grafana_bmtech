@@ -1,6 +1,5 @@
 import React from 'react';
 import { hot } from 'react-hot-loader';
-import Select from 'react-select';
 import _ from 'lodash';
 
 import { DataSource } from 'app/types/datasources';
@@ -25,10 +24,6 @@ import {
   makeTimeSeriesList,
   updateHistory,
 } from 'app/core/utils/explore';
-import ResetStyles from 'app/core/components/Picker/ResetStyles';
-import PickerOption from 'app/core/components/Picker/PickerOption';
-import IndicatorsContainer from 'app/core/components/Picker/IndicatorsContainer';
-import NoOptionsMessage from 'app/core/components/Picker/NoOptionsMessage';
 import TableModel from 'app/core/table_model';
 import { DatasourceSrv } from 'app/features/plugins/datasource_srv';
 
@@ -39,6 +34,7 @@ import Logs from './Logs';
 import Table from './Table';
 import ErrorBoundary from './ErrorBoundary';
 import TimePicker from './TimePicker';
+import ExploreNavBar from './ExploreNavBar';
 
 interface ExploreProps {
   datasourceSrv: DatasourceSrv;
@@ -88,7 +84,7 @@ interface ExploreProps {
  * `format`, to indicate eventual transformations by the datasources' result transformers.
  */
 export class Explore extends React.PureComponent<ExploreProps, ExploreState> {
-  el: any;
+  element: HTMLElement;
   /**
    * Current query expressions of the rows including their modifications, used for running queries.
    * Not kept in component state to prevent edit-render roundtrips.
@@ -116,8 +112,10 @@ export class Explore extends React.PureComponent<ExploreProps, ExploreState> {
       const { datasource, queries, range } = props.urlState as ExploreUrlState;
       initialQueries = ensureQueries(queries);
       const initialRange = range || { ...DEFAULT_RANGE };
+
       // Millies step for helper bar charts
       const initialGraphInterval = 15 * 1000;
+
       this.state = {
         datasource: null,
         datasourceError: null,
@@ -149,11 +147,12 @@ export class Explore extends React.PureComponent<ExploreProps, ExploreState> {
 
   async componentDidMount() {
     const { datasourceSrv } = this.props;
-    const { datasourceName } = this.state;
+
     if (!datasourceSrv) {
       throw new Error('No datasource service passed as props.');
     }
     const datasources = datasourceSrv.getExploreSources();
+
     const exploreDatasources = datasources.map(ds => ({
       value: ds.name,
       label: ds.name,
@@ -161,17 +160,7 @@ export class Explore extends React.PureComponent<ExploreProps, ExploreState> {
 
     if (datasources.length > 0) {
       this.setState({ datasourceLoading: true, exploreDatasources });
-      // Priority: datasource in url, default datasource, first explore datasource
-      let datasource;
-      if (datasourceName) {
-        datasource = await datasourceSrv.get(datasourceName);
-      } else {
-        datasource = await datasourceSrv.get();
-      }
-      if (!datasource.meta.explore) {
-        datasource = await datasourceSrv.get(datasources[0].name);
-      }
-      await this.setDatasource(datasource);
+      await this.setDatasource(this.getDataSource(datasources));
     } else {
       this.setState({ datasourceMissing: true });
     }
@@ -179,6 +168,26 @@ export class Explore extends React.PureComponent<ExploreProps, ExploreState> {
 
   componentWillUnmount() {
     clearTimeout(this.scanTimer);
+  }
+
+  // Priority: datasource in url, default datasource, first explore datasource
+  async getDataSource(datasources) {
+    const { datasourceSrv } = this.props;
+    const { datasourceName } = this.state;
+
+    let datasource;
+
+    if (datasourceName) {
+      datasource = datasourceSrv.get(datasourceName);
+    } else {
+      datasource = datasourceSrv.get();
+    }
+
+    if (!datasource.meta.explore) {
+      datasource = datasourceSrv.get(datasources[0].name);
+    }
+
+    return datasource;
   }
 
   async setDatasource(datasource: any, origin?: DataSource) {
@@ -238,7 +247,7 @@ export class Explore extends React.PureComponent<ExploreProps, ExploreState> {
     const StartPage = datasource.pluginExports.ExploreStartPage;
 
     // Calculate graph bucketing interval
-    const graphInterval = getIntervals(range, datasource, this.el ? this.el.offsetWidth : 0).intervalMs;
+    const graphInterval = getIntervals(range, datasource, this.element ? this.element.offsetWidth : 0).intervalMs;
 
     this.setState(
       {
@@ -263,10 +272,6 @@ export class Explore extends React.PureComponent<ExploreProps, ExploreState> {
       }
     );
   }
-
-  getRef = el => {
-    this.el = el;
-  };
 
   onAddQueryRow = index => {
     // Local cache
@@ -595,7 +600,7 @@ export class Explore extends React.PureComponent<ExploreProps, ExploreState> {
 
   buildQueryOptions(query: DataQuery, queryOptions: { format: string; hinting?: boolean; instant?: boolean }) {
     const { datasource, range } = this.state;
-    const { interval, intervalMs } = getIntervals(range, datasource, this.el.offsetWidth);
+    const { interval, intervalMs } = getIntervals(range, datasource, this.element.offsetWidth);
 
     const configuredQueries = [
       {
@@ -864,76 +869,33 @@ export class Explore extends React.PureComponent<ExploreProps, ExploreState> {
     const loading = queryTransactions.some(qt => !qt.done);
 
     return (
-      <div className={exploreClass} ref={this.getRef}>
-        <div className="navbar">
-          {position === 'left' ? (
-            <div>
-              <a className="navbar-page-btn">
-                <i className="fa fa-rocket" />
-                Explore
-              </a>
-            </div>
-          ) : (
-            <div className="navbar-buttons explore-first-button">
-              <button className="btn navbar-button" onClick={this.onClickCloseSplit}>
-                Close Split
-              </button>
-            </div>
-          )}
-          {!datasourceMissing ? (
-            <div className="navbar-buttons">
-              <Select
-                classNamePrefix={`gf-form-select-box`}
-                isMulti={false}
-                isLoading={datasourceLoading}
-                isClearable={false}
-                className="gf-form-input gf-form-input--form-dropdown datasource-picker"
-                onChange={this.onChangeDatasource}
-                options={exploreDatasources}
-                styles={ResetStyles}
-                placeholder="Select datasource"
-                loadingMessage={() => 'Loading datasources...'}
-                noOptionsMessage={() => 'No datasources found'}
-                value={selectedDatasource}
-                components={{
-                  Option: PickerOption,
-                  IndicatorsContainer,
-                  NoOptionsMessage,
-                }}
-              />
-            </div>
-          ) : null}
-          <div className="navbar__spacer" />
-          {position === 'left' && !split ? (
-            <div className="navbar-buttons">
-              <button className="btn navbar-button" onClick={this.onClickSplit}>
-                Split
-              </button>
-            </div>
-          ) : null}
-          <TimePicker ref={this.timepickerRef} range={range} onChangeTime={this.onChangeTime} />
-          <div className="navbar-buttons">
-            <button className="btn navbar-button navbar-button--no-icon" onClick={this.onClickClear}>
-              Clear All
-            </button>
-          </div>
-          <div className="navbar-buttons relative">
-            <button className="btn navbar-button--primary" onClick={this.onSubmit}>
-              Run Query{' '}
-              {loading ? <i className="fa fa-spinner fa-spin run-icon" /> : <i className="fa fa-level-down run-icon" />}
-            </button>
-          </div>
-        </div>
+      <div className={exploreClass} ref={element => (this.element = element)}>
+        <ExploreNavBar
+          dataSourceMissing={datasourceMissing}
+          dataSourceLoading={datasourceLoading}
+          exploreDataSources={exploreDatasources}
+          loading={loading}
+          onChangeDataSource={option => this.onChangeDatasource(option)}
+          onChangeTime={this.onChangeTime}
+          onClear={this.onClickClear}
+          onCloseSplit={this.onClickCloseSplit}
+          onSubmit={this.onSubmit}
+          position={position}
+          range={range}
+          selectedDataSource={selectedDatasource}
+          setTimePickerRef={element => (this.timepickerRef = element)}
+          split={split}
+        />
 
         {datasourceLoading ? <div className="explore-container">Loading datasource...</div> : null}
 
-        {datasourceMissing ? (
+        {datasourceMissing && (
           <div className="explore-container">Please add a datasource that supports Explore (e.g., Prometheus).</div>
-        ) : null}
+        )}
 
-        {datasourceError ? (
+        {datasourceError && (
           <div className="explore-container">Error connecting to datasource. [{datasourceError}]</div>
-        ) : null}
+        )}
 
         {datasource && !datasourceError ? (
           <div className="explore-container">
