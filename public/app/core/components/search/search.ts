@@ -180,9 +180,15 @@ export class SearchCtrl {
     return query.query === '' && query.starred === false && query.tag.length === 0;
   }
 
-  filterByTag(tag) {
-    if (_.indexOf(this.query.tag, tag) === -1) {
-      this.query.tag.push(tag);
+  filterByTag(tag: string) {
+    const tagIndex = this.query.tag.findIndex(queryTag => queryTag.label === tag);
+
+    if (tagIndex === -1) {
+      this.query.tag.push({
+        value: tag,
+        label: tag,
+        count: null,
+      });
       this.search();
     }
   }
