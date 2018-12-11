@@ -839,12 +839,13 @@
   version = "v2.3.2"
 
 [[projects]]
-  digest = "1:a50fabe7a46692dc7c656310add3d517abe7914df02afd151ef84da884605dc8"
+  digest = "1:812f9446bc99ebd1c66c55fa456ff7843f7105d22f11f0a2098bced37e9c6d32"
   name = "gopkg.in/square/go-jose.v2"
   packages = [
     ".",
     "cipher",
     "json",
+    "jwt",
   ]
   pruneopts = "NUT"
   revision = "ef984e69dd356202fd4e4910d4d9c24468bdf0b8"
@@ -936,6 +937,7 @@
     "gopkg.in/macaron.v1",
     "gopkg.in/mail.v2",
     "gopkg.in/square/go-jose.v2",
+    "gopkg.in/square/go-jose.v2/jwt",
     "gopkg.in/yaml.v2",
   ]
   solver-name = "gps-cdcl"
