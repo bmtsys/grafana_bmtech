@@ -104,7 +104,7 @@ func initContextWithTokenCookie(ctx *m.ReqContext, orgId int64) bool {
 		return false
 	}
 
-	sessionID, userID, err := tokenAuthenticator.Validate(sessionToken)
+	authToken, userID, err := tokenAuthenticator.Validate(sessionToken)
 	if err != nil && err != m.ErrSessionTokenExpired {
 		ctx.Logger.Error("Failed to validate session token", "error", err)
 		ctx.Resp.Header().Del("Set-Cookie")
@@ -115,8 +115,7 @@ func initContextWithTokenCookie(ctx *m.ReqContext, orgId int64) bool {
 
 	if err != nil && err == m.ErrSessionTokenExpired {
 		cmd := &m.RefreshUserSessionCommand{
-			SessionID: sessionID,
-			UserID:    userID,
+			AuthToken: authToken,
 			ClientIP:  ctx.Req.RemoteAddr,
 			UserAgent: ctx.Req.UserAgent(),
 		}
@@ -133,14 +132,16 @@ func initContextWithTokenCookie(ctx *m.ReqContext, orgId int64) bool {
 			return false
 		}
 
-		serializedToken, err := tokenAuthenticator.RefreshToken(cmd.SessionID, cmd.UserID, time.Unix(cmd.Result.CreatedAt, 0).UTC())
-		if err != nil {
-			ctx.Logger.Error("Error while trying to refresh session token", "error", err)
-			return false
-		}
+		if cmd.Refreshed {
+			serializedToken, err := tokenAuthenticator.RefreshToken(cmd.Result.AuthToken, cmd.Result.UserId, time.Unix(cmd.Result.CreatedAt, 0).UTC())
+			if err != nil {
+				ctx.Logger.Error("Error while trying to refresh session token", "error", err)
+				return false
+			}
 
-		ctx.Resp.Header().Del("Set-Cookie")
-		ctx.SetCookie(sessionCookieName, serializedToken, 86400, setting.AppSubUrl+"/", setting.Domain, false, true, time.Now().UTC().Add(24*time.Hour))
+			ctx.Resp.Header().Del("Set-Cookie")
+			ctx.SetCookie(sessionCookieName, serializedToken, 86400, setting.AppSubUrl+"/", setting.Domain, false, true, time.Now().UTC().Add(24*time.Hour))
+		}
 	}
 
 	query := m.GetSignedInUserQuery{UserId: userID, OrgId: orgId}

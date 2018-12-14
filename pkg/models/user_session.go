@@ -12,13 +12,17 @@ var (
 )
 
 type UserSession struct {
-	SessionId   string
-	UserId      int64
-	UserAgent   string
-	ClientIp    string
-	RefreshedAt int64
-	CreatedAt   int64
-	UpdatedAt   int64
+	Id            int64
+	UserId        int64
+	AuthToken     string
+	PrevAuthToken string
+	UserAgent     string
+	ClientIp      string
+	AuthTokenSeen bool
+	SeenAt        int64
+	RotatedAt     int64
+	CreatedAt     int64
+	UpdatedAt     int64
 }
 
 // ---------------------
@@ -33,19 +37,18 @@ type CreateUserSessionCommand struct {
 }
 
 type RefreshUserSessionCommand struct {
-	SessionID string
-	UserID    int64
+	AuthToken string
 	ClientIP  string
 	UserAgent string
 
-	Result *UserSession
+	Result    *UserSession
+	Refreshed bool
 }
 
 // ---------------------
 // QUERIES
 
-type GetUserSessionQuery struct {
-	SessionID string
-	UserID    int64
-	Result    *UserSession
+type LookupUserSessionByTokenQuery struct {
+	Token  string
+	Result *UserSession
 }

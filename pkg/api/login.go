@@ -173,7 +173,7 @@ func LoginPost(c *m.ReqContext, cmd dtos.LoginCommand) Response {
 		return Error(500, "Error while trying to authenticate user", err)
 	}
 
-	serializedToken, err := tokenAuthenticator.CreateToken(session.SessionId, user.Id)
+	serializedToken, err := tokenAuthenticator.CreateToken(session.AuthToken, user.Id)
 	if err != nil {
 		return Error(500, "Error while trying to authenticate user", err)
 	}
