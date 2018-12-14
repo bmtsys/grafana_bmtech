@@ -2,12 +2,14 @@ package middleware
 
 import (
 	"strconv"
+	"time"
 
 	"gopkg.in/macaron.v1"
 
 	"github.com/grafana/grafana/pkg/bus"
 	"github.com/grafana/grafana/pkg/components/apikeygen"
 	"github.com/grafana/grafana/pkg/log"
+	"github.com/grafana/grafana/pkg/login"
 	m "github.com/grafana/grafana/pkg/models"
 	"github.com/grafana/grafana/pkg/services/session"
 	"github.com/grafana/grafana/pkg/setting"
@@ -49,7 +51,8 @@ func GetContextHandler() macaron.Handler {
 		case initContextWithApiKey(ctx):
 		case initContextWithBasicAuth(ctx, orgId):
 		case initContextWithAuthProxy(ctx, orgId):
-		case initContextWithUserSessionCookie(ctx, orgId):
+		case initContextWithTokenCookie(ctx, orgId):
+		// case initContextWithUserSessionCookie(ctx, orgId):
 		case initContextWithAnonymousUser(ctx):
 		}
 
@@ -85,6 +88,69 @@ func initContextWithAnonymousUser(ctx *m.ReqContext) bool {
 	ctx.OrgRole = m.RoleType(setting.AnonymousOrgRole)
 	ctx.OrgId = orgQuery.Result.Id
 	ctx.OrgName = orgQuery.Result.Name
+	return true
+}
+
+func initContextWithTokenCookie(ctx *m.ReqContext, orgId int64) bool {
+	sessionCookieName := "session"
+	sessionToken := ctx.GetCookie(sessionCookieName)
+	if sessionToken == "" {
+		return false
+	}
+
+	tokenAuthenticator, err := login.NewTokenAuthenticator()
+	if err != nil {
+		ctx.Logger.Error("Failed to create topen authenticator", "error", err)
+		return false
+	}
+
+	sessionID, userID, err := tokenAuthenticator.Validate(sessionToken)
+	if err != nil && err != m.ErrSessionTokenExpired {
+		ctx.Logger.Error("Failed to validate session token", "error", err)
+		ctx.Resp.Header().Del("Set-Cookie")
+		ctx.SetCookie(sessionCookieName, "", -1, setting.AppSubUrl+"/", setting.Domain, false, true)
+
+		return false
+	}
+
+	if err != nil && err == m.ErrSessionTokenExpired {
+		cmd := &m.RefreshUserSessionCommand{
+			SessionID: sessionID,
+			UserID:    userID,
+			ClientIP:  ctx.Req.RemoteAddr,
+			UserAgent: ctx.Req.UserAgent(),
+		}
+
+		if err := bus.Dispatch(cmd); err != nil {
+			if err == m.ErrSessionNotFound {
+				ctx.Logger.Error("Session not found")
+				ctx.Resp.Header().Del("Set-Cookie")
+				ctx.SetCookie(sessionCookieName, "", -1, setting.AppSubUrl+"/", setting.Domain, false, true)
+				return false
+			}
+
+			ctx.Logger.Error("Error while trying to refresh user session", "error", err)
+			return false
+		}
+
+		serializedToken, err := tokenAuthenticator.RefreshToken(cmd.SessionID, cmd.UserID, time.Unix(cmd.Result.CreatedAt, 0).UTC())
+		if err != nil {
+			ctx.Logger.Error("Error while trying to refresh session token", "error", err)
+			return false
+		}
+
+		ctx.Resp.Header().Del("Set-Cookie")
+		ctx.SetCookie(sessionCookieName, serializedToken, 86400, setting.AppSubUrl+"/", setting.Domain, false, true, time.Now().UTC().Add(24*time.Hour))
+	}
+
+	query := m.GetSignedInUserQuery{UserId: userID, OrgId: orgId}
+	if err := bus.Dispatch(&query); err != nil {
+		ctx.Logger.Error("Failed to get user with id", "userId", userID, "error", err)
+		return false
+	}
+
+	ctx.SignedInUser = query.Result
+	ctx.IsSignedIn = true
 	return true
 }
 

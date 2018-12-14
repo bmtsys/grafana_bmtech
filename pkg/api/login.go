@@ -2,6 +2,7 @@ package api
 
 import (
 	"net/url"
+	"time"
 
 	"github.com/grafana/grafana/pkg/api/dtos"
 	"github.com/grafana/grafana/pkg/bus"
@@ -43,10 +44,10 @@ func (hs *HTTPServer) LoginView(c *m.ReqContext) {
 		return
 	}
 
-	if !tryLoginUsingRememberCookie(c) {
-		c.HTML(200, ViewIndex, viewData)
-		return
-	}
+	// if !tryLoginUsingRememberCookie(c) {
+	c.HTML(200, ViewIndex, viewData)
+	return
+	// }
 
 	if redirectTo, _ := url.QueryUnescape(c.GetCookie("redirect_to")); len(redirectTo) > 0 {
 		c.SetCookie("redirect_to", "", -1, setting.AppSubUrl+"/")
@@ -74,6 +75,8 @@ func tryOAuthAutoLogin(c *m.ReqContext) bool {
 	}
 	return false
 }
+
+const sessionCookieName = "session"
 
 func tryLoginUsingRememberCookie(c *m.ReqContext) bool {
 	// Check auto-login.
@@ -146,7 +149,36 @@ func LoginPost(c *m.ReqContext, cmd dtos.LoginCommand) Response {
 
 	user := authQuery.User
 
-	loginUserWithUser(user, c)
+	// loginUserWithUser(user, c)
+
+	if user == nil {
+		log.Error(3, "User login with nil user")
+	}
+
+	c.Resp.Header().Del("Set-Cookie")
+
+	sessionCmd := &m.CreateUserSessionCommand{
+		UserID:    user.Id,
+		ClientIP:  c.Req.RemoteAddr,
+		UserAgent: c.Req.UserAgent(),
+	}
+
+	if err := bus.Dispatch(sessionCmd); err != nil {
+		return Error(500, "Error while trying to authenticate user", err)
+	}
+
+	session := sessionCmd.Result
+	tokenAuthenticator, err := login.NewTokenAuthenticator()
+	if err != nil {
+		return Error(500, "Error while trying to authenticate user", err)
+	}
+
+	serializedToken, err := tokenAuthenticator.CreateToken(session.SessionId, user.Id)
+	if err != nil {
+		return Error(500, "Error while trying to authenticate user", err)
+	}
+
+	c.SetCookie(sessionCookieName, serializedToken, 86400, setting.AppSubUrl+"/", setting.Domain, false, true, time.Now().Add(24*time.Hour))
 
 	result := map[string]interface{}{
 		"message": "Logged in",
@@ -182,6 +214,7 @@ func loginUserWithUser(user *m.User, c *m.ReqContext) {
 func Logout(c *m.ReqContext) {
 	c.SetCookie(setting.CookieUserName, "", -1, setting.AppSubUrl+"/")
 	c.SetCookie(setting.CookieRememberName, "", -1, setting.AppSubUrl+"/")
+	c.SetCookie(sessionCookieName, "", -1, setting.AppSubUrl+"/", setting.Domain, false, true)
 	c.Session.Destory(c.Context)
 	if setting.SignoutRedirectUrl != "" {
 		c.Redirect(setting.SignoutRedirectUrl)

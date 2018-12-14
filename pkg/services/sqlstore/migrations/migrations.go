@@ -31,6 +31,7 @@ func AddMigrations(mg *Migrator) {
 	addTagMigration(mg)
 	addLoginAttemptMigrations(mg)
 	addUserAuthMigrations(mg)
+	addUserSessionMigrations(mg)
 }
 
 func addMigrationLogMigrations(mg *Migrator) {
