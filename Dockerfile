@@ -1,7 +1,7 @@
 # Golang build container
 FROM golang:1.11
 
-WORKDIR $GOPATH/src/github.com/grafana/grafana
+WORKDIR $GOPATH/src/github.com/bmtsys/grafana_bmtech
 
 COPY Gopkg.toml Gopkg.lock ./
 COPY vendor vendor
