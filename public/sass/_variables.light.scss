@@ -25,6 +25,7 @@ $gray-4: #c7d0d9;
 $gray-5: #dde4ed;
 $gray-6: #e9edf2;
 $gray-7: #f7f8fa;
+$blue-1: #30426a;
 
 $white: #fff;
 
@@ -198,9 +199,9 @@ $input-color-select-arrow: $gray-1;
 
 // Sidemenu
 // -------------------------
-$side-menu-bg: $dark-2;
-$side-menu-bg-mobile: rgba(0, 0, 0, 0); //$gray-6;
-$side-menu-item-hover-bg: $gray-1;
+$side-menu-bg: $blue-1;
+$side-menu-bg-mobile: $blue-1;
+$side-menu-item-hover-bg: $blue-2;
 $side-menu-shadow: 5px 0px 10px -5px $gray-1;
 $side-menu-link-color: $gray-6;
 
