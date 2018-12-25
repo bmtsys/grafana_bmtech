@@ -6,18 +6,16 @@ $login-border: #8daac5;
   background-repeat: no-repeat;
   min-width: 100%;
   margin-left: 0;
-  background-color: $black;
+  background-color: #30426a;
   display: flex;
   align-items: center;
   justify-content: center;
-  background-image: url(../img/heatmap_bg_test.svg);
   background-size: cover;
   color: #d8d9da;
   & a {
     color: #d8d9da !important;
   }
   & .btn-primary {
-    @include buttonBackground(#ff6600, #bc3e06);
   }
 }
 
@@ -53,8 +51,8 @@ select:-webkit-autofill:focus {
   border: 1px solid $login-border;
   border-radius: 4px;
   opacity: 0.6;
-  background: $black;
-  color: #fbfbfb;
+  background: #fff;
+  color: #111;
 
   &:focus {
     border: 1px solid $login-border;
