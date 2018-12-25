@@ -191,7 +191,6 @@ li.sidemenu-org-switcher {
   height: $navbarHeight - 1px;
 
   &:hover {
-    background: $navbarButtonBackgroundHighlight;
   }
 
   img {
@@ -213,7 +212,6 @@ li.sidemenu-org-switcher {
       background: $side-menu-bg-mobile;
       position: initial;
       height: auto;
-      box-shadow: $side-menu-shadow;
       position: relative;
       z-index: $zindex-sidemenu;
     }

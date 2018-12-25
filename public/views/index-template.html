@@ -7,11 +7,9 @@
   <meta name="viewport" content="width=device-width">
   <meta name="theme-color" content="#000">
 
-  <title>Grafana</title>
-
   <base href="[[.AppSubUrl]]/" />
 
-  <link rel="icon" type="image/png" href="public/img/fav32.png">
+  <link rel="icon" type="image/png" href="public/img/fav32.ico">
   <link rel="mask-icon" href="public/img/grafana_mask_icon.svg" color="#F05A28">
   <link rel="apple-touch-icon" sizes="180x180" href="public/img/apple-touch-icon.png">
 
@@ -25,7 +23,7 @@
 
 <body class="theme-[[ .Theme ]] [[.AppNameBodyClass]]">
 
-  <style>
+  <!-- <style>
     .preloader {
       height: 100%;
       flex-direction: column;
@@ -161,9 +159,9 @@
     .ng-cloak {
       display: none !important;
     }
-  </style>
+  </style> -->
 
-  <div class="preloader">
+  <!-- <div class="preloader">
     <div class="preloader__enter">
       <div class="preloader__bounce">
         <div class="preloader__logo"></div>
@@ -184,7 +182,7 @@
         4. Sometimes restarting grafana-server can help<br />
       </p>
     </div>
-  </div>
+  </div> -->
 
   <grafana-app class="grafana-app" ng-cloak>
     <sidemenu class="sidemenu"></sidemenu>
@@ -195,7 +193,7 @@
       <div class="scroll-canvas" page-scrollbar>
         <div ng-view></div>
 
-        <footer class="footer">
+        <!-- <footer class="footer">
           <div class="text-center">
             <ul>
               <li>
@@ -229,7 +227,7 @@
               [[end]]
             </ul>
           </div>
-        </footer>
+        </footer> -->
       </div>
     </div>
   </grafana-app>
@@ -241,35 +239,35 @@
       navTree: [[.NavTree]]
     };
 
-		// In case the js files fails to load the code below will show an info message.
-    window.onload = function() {
-      var preloader = document.getElementsByClassName("preloader");
-      if (preloader.length) {
-        preloader[0].className = "preloader preloader--done";
-      }
-    };
+    // In case the js files fails to load the code below will show an info message.
+    // window.onload = function() {
+    //   var preloader = document.getElementsByClassName("preloader");
+    //   if (preloader.length) {
+    //     preloader[0].className = "preloader preloader--done";
+    //   }
+    // };
   </script>
 
-	[[if .GoogleTagManagerId]]
-		<!-- Google Tag Manager -->
-		<script>
-			dataLayer = [{
-				'IsSignedIn': '[[.User.IsSignedIn]]',
-				'Email': '[[.User.Email]]',
-				'Name': '[[.User.Name]]',
-				'UserId': '[[.User.Id]]',
-				'OrgId': '[[.User.OrgId]]',
-				'OrgName': '[[.User.OrgName]]',
-			}];
-		</script>
-		<noscript>
-			<iframe src="//www.googletagmanager.com/ns.html?id=[[.GoogleTagManagerId]]" height="0" width="0" style="display:none;visibility:hidden"></iframe>
-		</noscript>
-		<script>(function (w, d, s, l, i) {
-				w[l] = w[l] || []; w[l].push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' }); var f = d.getElementsByTagName(s)[0],
-					j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src = '//www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
-			})(window, document, 'script', 'dataLayer', '[[.GoogleTagManagerId]]');</script>
-		<!-- End Google Tag Manager -->
+  [[if .GoogleTagManagerId]]
+    <!-- Google Tag Manager -->
+    <script>
+      dataLayer = [{
+        'IsSignedIn': '[[.User.IsSignedIn]]',
+        'Email': '[[.User.Email]]',
+        'Name': '[[.User.Name]]',
+        'UserId': '[[.User.Id]]',
+        'OrgId': '[[.User.OrgId]]',
+        'OrgName': '[[.User.OrgName]]',
+      }];
+    </script>
+    <noscript>
+      <iframe src="//www.googletagmanager.com/ns.html?id=[[.GoogleTagManagerId]]" height="0" width="0" style="display:none;visibility:hidden"></iframe>
+    </noscript>
+    <script>(function (w, d, s, l, i) {
+        w[l] = w[l] || []; w[l].push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' }); var f = d.getElementsByTagName(s)[0],
+          j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src = '//www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
+      })(window, document, 'script', 'dataLayer', '[[.GoogleTagManagerId]]');</script>
+    <!-- End Google Tag Manager -->
   [[end]]
 
 </body>
