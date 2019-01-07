@@ -37,17 +37,17 @@ More information [here](https://community.grafana.com/t/using-grafanas-query-ins
 
 ### New Features
 
-* **Table panel**: Render cell values as links that can have an url template that uses variables from current table row. [#3754](https://github.com/grafana/grafana/issues/3754)
-* **Elasticsearch**: Add ad hoc filters directly by clicking values in table panel [#8052](https://github.com/grafana/grafana/issues/8052).
+* **Table panel**: Render cell values as links that can have an url template that uses variables from current table row. [#3754](https://github.com/grafana/grafana_bmtech/issues/3754)
+* **Elasticsearch**: Add ad hoc filters directly by clicking values in table panel [#8052](https://github.com/grafana/grafana_bmtech/issues/8052).
 * **MySQL**: New rich query editor with syntax highlighting
-* **Prometheus**: New rich query editor with syntax highlighting, metric & range auto complete and integrated function docs. [#5117](https://github.com/grafana/grafana/issues/5117)
+* **Prometheus**: New rich query editor with syntax highlighting, metric & range auto complete and integrated function docs. [#5117](https://github.com/grafana/grafana_bmtech/issues/5117)
 
 ### Enhancements
 
-* **GitHub OAuth**: Support for GitHub organizations with 100+ teams. [#8846](https://github.com/grafana/grafana/issues/8846), thx [@skwashd](https://github.com/skwashd)
-* **Graphite**: Calls to Graphite api /metrics/find now include panel or dashboard time range (from & until) in most cases, [#8055](https://github.com/grafana/grafana/issues/8055)
-* **Graphite**: Added new graphite 1.0 functions, available if you set version to 1.0.x in data source settings. New Functions: mapSeries, reduceSeries, isNonNull, groupByNodes, offsetToZero, grep, weightedAverage, removeEmptySeries, aggregateLine, averageOutsidePercentile, delay, exponentialMovingAverage, fallbackSeries, integralByInterval, interpolate, invert, linearRegression, movingMin, movingMax, movingSum, multiplySeriesWithWildcards, pow, powSeries, removeBetweenPercentile, squareRoot, timeSlice, closes [#8261](https://github.com/grafana/grafana/issues/8261)
-- **Elasticsearch**: Ad-hoc filters now use query phrase match filters instead of term filters, works on non keyword/raw fields [#9095](https://github.com/grafana/grafana/issues/9095).
+* **GitHub OAuth**: Support for GitHub organizations with 100+ teams. [#8846](https://github.com/grafana/grafana_bmtech/issues/8846), thx [@skwashd](https://github.com/skwashd)
+* **Graphite**: Calls to Graphite api /metrics/find now include panel or dashboard time range (from & until) in most cases, [#8055](https://github.com/grafana/grafana_bmtech/issues/8055)
+* **Graphite**: Added new graphite 1.0 functions, available if you set version to 1.0.x in data source settings. New Functions: mapSeries, reduceSeries, isNonNull, groupByNodes, offsetToZero, grep, weightedAverage, removeEmptySeries, aggregateLine, averageOutsidePercentile, delay, exponentialMovingAverage, fallbackSeries, integralByInterval, interpolate, invert, linearRegression, movingMin, movingMax, movingSum, multiplySeriesWithWildcards, pow, powSeries, removeBetweenPercentile, squareRoot, timeSlice, closes [#8261](https://github.com/grafana/grafana_bmtech/issues/8261)
+- **Elasticsearch**: Ad-hoc filters now use query phrase match filters instead of term filters, works on non keyword/raw fields [#9095](https://github.com/grafana/grafana_bmtech/issues/9095).
 
 ### Breaking change
 
@@ -61,11 +61,11 @@ Datas source selection & options & help are now above your metric queries.
 
 ### Minor Changes
 
-* **InfluxDB**: Change time range filter for absolute time ranges to be inclusive instead of exclusive [#8319](https://github.com/grafana/grafana/issues/8319), thx [@Oxydros](https://github.com/Oxydros)
-* **InfluxDB**: Added parenthesis around tag filters in queries [#9131](https://github.com/grafana/grafana/pull/9131)
+* **InfluxDB**: Change time range filter for absolute time ranges to be inclusive instead of exclusive [#8319](https://github.com/grafana/grafana_bmtech/issues/8319), thx [@Oxydros](https://github.com/Oxydros)
+* **InfluxDB**: Added parenthesis around tag filters in queries [#9131](https://github.com/grafana/grafana_bmtech/pull/9131)
 
 ## Bug Fixes
 
-* **Modals**: Maintain scroll position after opening/leaving modal [#8800](https://github.com/grafana/grafana/issues/8800)
-* **Templating**: You cannot select data source variables as data source for other template variables [#7510](https://github.com/grafana/grafana/issues/7510)
+* **Modals**: Maintain scroll position after opening/leaving modal [#8800](https://github.com/grafana/grafana_bmtech/issues/8800)
+* **Templating**: You cannot select data source variables as data source for other template variables [#7510](https://github.com/grafana/grafana_bmtech/issues/7510)
 

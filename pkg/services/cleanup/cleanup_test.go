@@ -1,7 +1,7 @@
 package cleanup
 
 import (
-	"github.com/grafana/grafana/pkg/setting"
+	"github.com/grafana/grafana_bmtech/pkg/setting"
 	. "github.com/smartystreets/goconvey/convey"
 	"testing"
 	"time"

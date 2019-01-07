@@ -1,9 +1,9 @@
 package api
 
 import (
-	"github.com/grafana/grafana/pkg/bus"
-	_ "github.com/grafana/grafana/pkg/log"
-	m "github.com/grafana/grafana/pkg/models"
+	"github.com/grafana/grafana_bmtech/pkg/bus"
+	_ "github.com/grafana/grafana_bmtech/pkg/log"
+	m "github.com/grafana/grafana_bmtech/pkg/models"
 )
 
 func ValidateOrgPlaylist(c *m.ReqContext) {

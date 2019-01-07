@@ -5,10 +5,10 @@ _grafana_tag=$1
 # If the tag starts with v, treat this as a official release
 if echo "$_grafana_tag" | grep -q "^v"; then
 	_grafana_version=$(echo "${_grafana_tag}" | cut -d "v" -f 2)
-	_docker_repo=${2:-grafana/grafana}
+	_docker_repo=${2:-grafana/grafana_bmtech}
 else
 	_grafana_version=$_grafana_tag
-	_docker_repo=${2:-grafana/grafana-dev}
+	_docker_repo=${2:-grafana/grafana_bmtech-dev}
 fi
 
 echo "Building ${_docker_repo}:${_grafana_version}"
@@ -17,9 +17,9 @@ docker build \
 	--tag "${_docker_repo}:${_grafana_version}" \
 	--no-cache=true .
 
-# Tag as 'latest' for official release; otherwise tag as grafana/grafana:master
+# Tag as 'latest' for official release; otherwise tag as grafana/grafana_bmtech:master
 if echo "$_grafana_tag" | grep -q "^v"; then
 	docker tag "${_docker_repo}:${_grafana_version}" "${_docker_repo}:latest"
 else
-	docker tag "${_docker_repo}:${_grafana_version}" "grafana/grafana:master"
+	docker tag "${_docker_repo}:${_grafana_version}" "grafana/grafana_bmtech:master"
 fi

@@ -9,11 +9,11 @@ import (
 	"path/filepath"
 	"time"
 
-	"github.com/grafana/grafana-plugin-model/go/datasource"
-	"github.com/grafana/grafana/pkg/log"
-	"github.com/grafana/grafana/pkg/models"
-	"github.com/grafana/grafana/pkg/plugins/datasource/wrapper"
-	"github.com/grafana/grafana/pkg/tsdb"
+	"github.com/grafana/grafana_bmtech-plugin-model/go/datasource"
+	"github.com/grafana/grafana_bmtech/pkg/log"
+	"github.com/grafana/grafana_bmtech/pkg/models"
+	"github.com/grafana/grafana_bmtech/pkg/plugins/datasource/wrapper"
+	"github.com/grafana/grafana_bmtech/pkg/tsdb"
 	plugin "github.com/hashicorp/go-plugin"
 )
 

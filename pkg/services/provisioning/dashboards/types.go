@@ -3,10 +3,10 @@ package dashboards
 import (
 	"time"
 
-	"github.com/grafana/grafana/pkg/components/simplejson"
-	"github.com/grafana/grafana/pkg/services/dashboards"
+	"github.com/grafana/grafana_bmtech/pkg/components/simplejson"
+	"github.com/grafana/grafana_bmtech/pkg/services/dashboards"
 
-	"github.com/grafana/grafana/pkg/models"
+	"github.com/grafana/grafana_bmtech/pkg/models"
 )
 
 type DashboardsAsConfig struct {

@@ -1,4 +1,4 @@
-[Grafana](https://grafana.com) [![Circle CI](https://circleci.com/gh/grafana/grafana.svg?style=svg)](https://circleci.com/gh/grafana/grafana) [![Go Report Card](https://goreportcard.com/badge/github.com/grafana/grafana)](https://goreportcard.com/report/github.com/grafana/grafana) [![codecov](https://codecov.io/gh/grafana/grafana/branch/master/graph/badge.svg)](https://codecov.io/gh/grafana/grafana)
+[Grafana](https://grafana.com) [![Circle CI](https://circleci.com/gh/grafana/grafana_bmtech.svg?style=svg)](https://circleci.com/gh/grafana/grafana_bmtech) [![Go Report Card](https://goreportcard.com/badge/github.com/grafana/grafana_bmtech)](https://goreportcard.com/report/github.com/grafana/grafana_bmtech) [![codecov](https://codecov.io/gh/grafana/grafana_bmtech/branch/master/graph/badge.svg)](https://codecov.io/gh/grafana/grafana_bmtech)
 ================
 [Website](https://grafana.com) |
 [Twitter](https://twitter.com/grafana) |
@@ -29,8 +29,8 @@ the latest master builds [here](https://grafana.com/grafana/download)
 
 ### Building the backend
 ```bash
-go get github.com/grafana/grafana
-cd $GOPATH/src/github.com/grafana/grafana
+go get github.com/grafana/grafana_bmtech
+cd $GOPATH/src/github.com/grafana/grafana_bmtech
 go run build.go setup
 go run build.go build
 ```
@@ -73,22 +73,22 @@ Open grafana in your browser (default: `http://localhost:3000`) and login with a
 
 There are two different ways to build a Grafana docker image. If you're machine is setup for Grafana development and you run linux/amd64 you can build just the image. Otherwise, there is the option to build Grafana completely within Docker.
 
-Run the image you have built using: `docker run --rm -p 3000:3000 grafana/grafana:dev`
+Run the image you have built using: `docker run --rm -p 3000:3000 grafana/grafana_bmtech:dev`
 
 #### Building on linux/amd64 (fast)
 
 1. Build the frontend `go run build.go build-frontend`
 2. Build the docker image `make build-docker-dev`
 
-The resulting image will be tagged as `grafana/grafana:dev`
+The resulting image will be tagged as `grafana/grafana_bmtech:dev`
 
 #### Building anywhere (slower)
 
 Choose this option to build on platforms other than linux/amd64 and/or not have to setup the Grafana development environment.
 
-1. `make build-docker-full` or `docker build -t grafana/grafana:dev .`
+1. `make build-docker-full` or `docker build -t grafana/grafana_bmtech:dev .`
 
-The resulting image will be tagged as `grafana/grafana:dev`
+The resulting image will be tagged as `grafana/grafana_bmtech:dev`
 
 Notice: If you are using Docker for MacOS, be sure to let limit of Memory bigger than 2 GiB (at docker -> Perferences -> Advanced), otherwize you may faild at `grunt build`
 
@@ -135,10 +135,10 @@ the kickass metrics & devops dashboard we all dream about!
 
 ## Plugin development
 
-Checkout the [Plugin Development Guide](http://docs.grafana.org/plugins/developing/development/) and checkout the [PLUGIN_DEV.md](https://github.com/grafana/grafana/blob/master/PLUGIN_DEV.md) file for changes in Grafana that relate to
+Checkout the [Plugin Development Guide](http://docs.grafana.org/plugins/developing/development/) and checkout the [PLUGIN_DEV.md](https://github.com/grafana/grafana_bmtech/blob/master/PLUGIN_DEV.md) file for changes in Grafana that relate to
 plugin development.
 
 ## License
 
-Grafana is distributed under [Apache 2.0 License](https://github.com/grafana/grafana/blob/master/LICENSE.md).
+Grafana is distributed under [Apache 2.0 License](https://github.com/grafana/grafana_bmtech/blob/master/LICENSE.md).
 

@@ -15,9 +15,9 @@ import (
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/cloudwatch"
 	"github.com/aws/aws-sdk-go/service/ec2"
-	"github.com/grafana/grafana/pkg/components/simplejson"
-	"github.com/grafana/grafana/pkg/metrics"
-	"github.com/grafana/grafana/pkg/tsdb"
+	"github.com/grafana/grafana_bmtech/pkg/components/simplejson"
+	"github.com/grafana/grafana_bmtech/pkg/metrics"
+	"github.com/grafana/grafana_bmtech/pkg/tsdb"
 )
 
 var metricsMap map[string][]string

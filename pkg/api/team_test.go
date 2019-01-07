@@ -3,9 +3,9 @@ package api
 import (
 	"testing"
 
-	"github.com/grafana/grafana/pkg/bus"
-	"github.com/grafana/grafana/pkg/components/simplejson"
-	"github.com/grafana/grafana/pkg/models"
+	"github.com/grafana/grafana_bmtech/pkg/bus"
+	"github.com/grafana/grafana_bmtech/pkg/components/simplejson"
+	"github.com/grafana/grafana_bmtech/pkg/models"
 
 	. "github.com/smartystreets/goconvey/convey"
 )

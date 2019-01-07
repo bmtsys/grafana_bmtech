@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 DAEMON=grafana-server
 EXECUTABLE=/usr/local/bin/grafana-server
-CONFIG=/usr/local/etc/grafana/grafana.ini
+CONFIG=/usr/local/etc/grafana/grafana_bmtech.ini
 HOMEPATH=/usr/local/share/grafana
 LOGPATH=/usr/local/var/log/grafana
 DATAPATH=/usr/local/var/lib/grafana

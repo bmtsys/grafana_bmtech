@@ -9,5 +9,5 @@ docker login -u "$DOCKER_USER" -p "$DOCKER_PASS"
 
 if echo "$_grafana_version" | grep -q "^master-"; then
   apk add --no-cache curl
-  ./deploy_to_k8s.sh "grafana/grafana-dev:$_grafana_version"
+  ./deploy_to_k8s.sh "grafana/grafana_bmtech-dev:$_grafana_version"
 fi

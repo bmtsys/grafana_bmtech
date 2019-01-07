@@ -5,12 +5,12 @@ docs are built using [Hugo](http://gohugo.io/) - a static site generator.
 
 **Prepare the Docker Image**:
 
-Git clone `grafana/grafana.org` repo. Run these commands in the root of that repo. **Note** that you may require ``sudo``
+Git clone `grafana/grafana_bmtech.org` repo. Run these commands in the root of that repo. **Note** that you may require ``sudo``
 when running ``make docs-build`` depending on how your system's docker
 service is configured):
 
 ```
-git clone https://github.com/grafana/grafana.org
+git clone https://github.com/grafana/grafana_bmtech.org
 cd grafana.org
 make docs-build
 ```
@@ -24,7 +24,7 @@ If you have not cloned the Grafana repository already then:
 
 ```
 cd ..
-git clone https://github.com/grafana/grafana
+git clone https://github.com/grafana/grafana_bmtech
 ```
 
 Switch your working directory to the directory this file
@@ -54,9 +54,9 @@ Open [localhost:3004](http://localhost:3004) to view the docs.
 
 ### Images & Content
 
-All markdown files are located in this repo (main grafana repo). But all images are added to the https://github.com/grafana/grafana.org repo. So the process of adding images is a bit complicated. 
+All markdown files are located in this repo (main grafana repo). But all images are added to the https://github.com/grafana/grafana_bmtech.org repo. So the process of adding images is a bit complicated. 
 
-First you need create a feature (PR) branch of https://github.com/grafana/grafana.org so you can make change. Then add the image to the `/static/img/docs` directory. Then make a commit that adds the image. 
+First you need create a feature (PR) branch of https://github.com/grafana/grafana_bmtech.org so you can make change. Then add the image to the `/static/img/docs` directory. Then make a commit that adds the image. 
 
 Then run:
 ```

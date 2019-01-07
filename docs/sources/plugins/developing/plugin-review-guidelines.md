@@ -17,7 +17,7 @@ The plugin metadata consists of a `plugin.json` file and the README.md file. The
 
 ### README.md
 
-The README.md file is shown on the plugins page in Grafana and the plugin page on Grafana.com. There are some differences between the GitHub markdown and the markdown allowed in Grafana/Grafana.com:
+The README.md file is shown on the plugins page in Grafana and the plugin page on Grafana.com. There are some differences between the GitHub markdown and the markdown allowed in grafana/grafana_bmtech.com:
 
 - Cannot contain inline HTML.
 - Any image links should be absolute links. For example: https://raw.githubusercontent.com/grafana/azure-monitor-datasource/master/dist/img/grafana_cloud_install.png
@@ -168,7 +168,7 @@ Each query editor is unique and can have a unique style. It should be adapted to
 
 - Should use the Grafana CSS `gf-form` classes.
 - Should be neat and tidy. Labels and fields in columns should be aligned and should be the same width if possible.
-- The datasource should be able to handle when a user toggles a query (by clicking on the eye icon) and not execute the query. This is done by checking the `hide` property - an [example](https://github.com/grafana/grafana/blob/master/public/app/plugins/datasource/postgres/datasource.ts#L35-L38).
+- The datasource should be able to handle when a user toggles a query (by clicking on the eye icon) and not execute the query. This is done by checking the `hide` property - an [example](https://github.com/grafana/grafana_bmtech/blob/master/public/app/plugins/datasource/postgres/datasource.ts#L35-L38).
 - Should not execute queries if fields in the Query Editor are empty and the query will throw an exception (defensive programming).
 - Should handle errors. There are two main ways to do this:
   - use the notification system in Grafana to show a toaster popup with the error message. Example [here](https://github.com/alexanderzobnin/grafana-zabbix/blob/fdbbba2fb03f5f2a4b3b0715415e09d5a4cf6cde/src/panel-triggers/triggers_panel_ctrl.js#L467-L471).

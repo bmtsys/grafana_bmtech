@@ -11,27 +11,27 @@ import (
 	"path"
 	"time"
 
-	"github.com/grafana/grafana/pkg/api/routing"
+	"github.com/grafana/grafana_bmtech/pkg/api/routing"
 	"github.com/prometheus/client_golang/prometheus"
 
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 
 	macaron "gopkg.in/macaron.v1"
 
-	"github.com/grafana/grafana/pkg/api/live"
-	httpstatic "github.com/grafana/grafana/pkg/api/static"
-	"github.com/grafana/grafana/pkg/bus"
-	"github.com/grafana/grafana/pkg/components/simplejson"
-	"github.com/grafana/grafana/pkg/log"
-	"github.com/grafana/grafana/pkg/middleware"
-	"github.com/grafana/grafana/pkg/models"
-	"github.com/grafana/grafana/pkg/plugins"
-	"github.com/grafana/grafana/pkg/registry"
-	"github.com/grafana/grafana/pkg/services/cache"
-	"github.com/grafana/grafana/pkg/services/datasources"
-	"github.com/grafana/grafana/pkg/services/hooks"
-	"github.com/grafana/grafana/pkg/services/rendering"
-	"github.com/grafana/grafana/pkg/setting"
+	"github.com/grafana/grafana_bmtech/pkg/api/live"
+	httpstatic "github.com/grafana/grafana_bmtech/pkg/api/static"
+	"github.com/grafana/grafana_bmtech/pkg/bus"
+	"github.com/grafana/grafana_bmtech/pkg/components/simplejson"
+	"github.com/grafana/grafana_bmtech/pkg/log"
+	"github.com/grafana/grafana_bmtech/pkg/middleware"
+	"github.com/grafana/grafana_bmtech/pkg/models"
+	"github.com/grafana/grafana_bmtech/pkg/plugins"
+	"github.com/grafana/grafana_bmtech/pkg/registry"
+	"github.com/grafana/grafana_bmtech/pkg/services/cache"
+	"github.com/grafana/grafana_bmtech/pkg/services/datasources"
+	"github.com/grafana/grafana_bmtech/pkg/services/hooks"
+	"github.com/grafana/grafana_bmtech/pkg/services/rendering"
+	"github.com/grafana/grafana_bmtech/pkg/setting"
 )
 
 func init() {

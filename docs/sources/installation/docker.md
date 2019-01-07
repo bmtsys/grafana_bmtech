@@ -15,7 +15,7 @@ weight = 4
 Grafana is very easy to install and run using the official docker container.
 
 ```bash
-$ docker run -d -p 3000:3000 grafana/grafana
+$ docker run -d -p 3000:3000 grafana/grafana_bmtech
 ```
 
 ## Configuration
@@ -31,7 +31,7 @@ $ docker run \
   --name=grafana \
   -e "GF_SERVER_ROOT_URL=http://grafana.server.name" \
   -e "GF_SECURITY_ADMIN_PASSWORD=secret" \
-  grafana/grafana
+  grafana/grafana_bmtech
 ```
 
 The back-end web server has a number of configuration options. Go to the
@@ -46,7 +46,7 @@ The following settings are hard-coded when launching the Grafana Docker containe
 
 Setting               | Default value
 ----------------------|---------------------------
-GF_PATHS_CONFIG       | /etc/grafana/grafana.ini
+GF_PATHS_CONFIG       | /etc/grafana/grafana_bmtech.ini
 GF_PATHS_DATA         | /var/lib/grafana
 GF_PATHS_HOME         | /usr/share/grafana
 GF_PATHS_LOGS         | /var/log/grafana
@@ -61,16 +61,16 @@ $ docker run \
   -d \
   -p 3000:3000 \
   --name grafana \
-  grafana/grafana:5.1.0
+  grafana/grafana_bmtech:5.1.0
 ```
 
 ## Running the master branch
 
-For every successful build of the master branch we update the `grafana/grafana:master` tag and create a new tag `grafana/grafana-dev:master-<commit hash>` with the hash of the git commit that was built. This means you can always get the latest version of Grafana.
+For every successful build of the master branch we update the `grafana/grafana_bmtech:master` tag and create a new tag `grafana/grafana_bmtech-dev:master-<commit hash>` with the hash of the git commit that was built. This means you can always get the latest version of Grafana.
 
-When running Grafana master in production we **strongly** recommend that you use the `grafana/grafana-dev:master-<commit hash>` tag as that will guarantee that you use a specific version of Grafana instead of whatever was the most recent commit at the time.
+When running Grafana master in production we **strongly** recommend that you use the `grafana/grafana_bmtech-dev:master-<commit hash>` tag as that will guarantee that you use a specific version of Grafana instead of whatever was the most recent commit at the time.
 
-For a list of available tags, check out [grafana/grafana](https://hub.docker.com/r/grafana/grafana/tags/) and [grafana/grafana-dev](https://hub.docker.com/r/grafana/grafana-dev/tags/). 
+For a list of available tags, check out [grafana/grafana_bmtech](https://hub.docker.com/r/grafana/grafana_bmtech/tags/) and [grafana/grafana_bmtech-dev](https://hub.docker.com/r/grafana/grafana_bmtech-dev/tags/). 
 
 ## Installing Plugins for Grafana
 
@@ -82,12 +82,12 @@ docker run \
   -p 3000:3000 \
   --name=grafana \
   -e "GF_INSTALL_PLUGINS=grafana-clock-panel,grafana-simple-json-datasource" \
-  grafana/grafana
+  grafana/grafana_bmtech
 ```
 
 ## Building a custom Grafana image with pre-installed plugins
 
-In the [grafana-docker](https://github.com/grafana/grafana/tree/master/packaging/docker)  there is a folder called `custom/` which includes a `Dockerfile` that can be used to build a custom Grafana image.  It accepts `GRAFANA_VERSION` and `GF_INSTALL_PLUGINS` as build arguments.
+In the [grafana-docker](https://github.com/grafana/grafana_bmtech/tree/master/packaging/docker)  there is a folder called `custom/` which includes a `Dockerfile` that can be used to build a custom Grafana image.  It accepts `GRAFANA_VERSION` and `GF_INSTALL_PLUGINS` as build arguments.
 
 Example of how to build and run:
 ```bash
@@ -115,7 +115,7 @@ docker run \
   -p 3000:3000 \
   --name=grafana \
   -e "GF_INSTALL_PLUGINS=http://plugin-domain.com/my-custom-plugin.zip;custom-plugin" \
-  grafana/grafana
+  grafana/grafana_bmtech
 ```
 
 ## Configuring AWS Credentials for CloudWatch Support
@@ -129,7 +129,7 @@ $ docker run \
   -e "GF_AWS_default_ACCESS_KEY_ID=YOUR_ACCESS_KEY" \
   -e "GF_AWS_default_SECRET_ACCESS_KEY=YOUR_SECRET_KEY" \
   -e "GF_AWS_default_REGION=us-east-1" \
-  grafana/grafana
+  grafana/grafana_bmtech
 ```
 
 You may also specify multiple profiles to `GF_AWS_PROFILES` (e.g.
@@ -153,7 +153,7 @@ docker run \
   -p 3000:3000 \
   --name=grafana \
   -v grafana-storage:/var/lib/grafana \
-  grafana/grafana
+  grafana/grafana_bmtech
 ```
 
 ## Grafana container using bind mounts
@@ -165,7 +165,7 @@ mkdir data # creates a folder for your data
 ID=$(id -u) # saves your user id in the ID variable
 
 # starts grafana with your user id and using the data folder
-docker run -d --user $ID --volume "$PWD/data:/var/lib/grafana" -p 3000:3000 grafana/grafana:5.1.0
+docker run -d --user $ID --volume "$PWD/data:/var/lib/grafana" -p 3000:3000 grafana/grafana_bmtech:5.1.0
 ```
 
 ## Reading secrets from files (support for Docker Secrets)
@@ -217,7 +217,7 @@ There are two possible solutions to this problem. Either you start the new conta
 #### Running docker as a different user
 
 ```bash
-docker run --user 104 --volume "<your volume mapping here>" grafana/grafana:5.1.0
+docker run --user 104 --volume "<your volume mapping here>" grafana/grafana_bmtech:5.1.0
 ```
 
 ##### Specifying a user in docker-compose.yml
@@ -226,7 +226,7 @@ version: "2"
 
 services:
   grafana:
-    image: grafana/grafana:5.1.0
+    image: grafana/grafana_bmtech:5.1.0
     ports:
       - 3000:3000
     user: "104"
@@ -237,7 +237,7 @@ services:
 The commands below will run bash inside the Grafana container with your volume mapped in. This makes it possible to modify the file ownership to match the new container. Always be careful when modifying permissions.
 
 ```bash
-$ docker run -ti --user root --volume "<your volume mapping here>" --entrypoint bash grafana/grafana:5.1.0
+$ docker run -ti --user root --volume "<your volume mapping here>" --entrypoint bash grafana/grafana_bmtech:5.1.0
 
 # in the container you just started:
 chown -R root:root /etc/grafana && \

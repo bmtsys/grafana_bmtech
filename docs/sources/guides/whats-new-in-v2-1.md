@@ -127,5 +127,5 @@ string values.
 
 ### Changelog
 For a detailed list and link to github issues for everything included in the 2.1 release please
-view the [CHANGELOG.md](https://github.com/grafana/grafana/blob/master/CHANGELOG.md) file.
+view the [CHANGELOG.md](https://github.com/grafana/grafana_bmtech/blob/master/CHANGELOG.md) file.
 

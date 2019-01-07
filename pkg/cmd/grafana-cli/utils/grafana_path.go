@@ -3,7 +3,7 @@ package utils
 import (
 	"os"
 
-	"github.com/grafana/grafana/pkg/cmd/grafana-cli/logger"
+	"github.com/grafana/grafana_bmtech/pkg/cmd/grafana-cli/logger"
 )
 
 func GetGrafanaPluginDir(currentOS string) string {

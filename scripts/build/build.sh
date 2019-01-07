@@ -11,9 +11,9 @@ EXTRA_OPTS="$@"
 CCX64=/tmp/x86_64-centos6-linux-gnu/bin/x86_64-centos6-linux-gnu-gcc
 
 GOPATH=/go
-REPO_PATH=$GOPATH/src/github.com/grafana/grafana
+REPO_PATH=$GOPATH/src/github.com/grafana/grafana_bmtech
 
-cd /go/src/github.com/grafana/grafana
+cd /go/src/github.com/grafana/grafana_bmtech
 echo "current dir: $(pwd)"
 
 if [ "$CIRCLE_TAG" != "" ]; then

@@ -98,10 +98,10 @@ key](https://grafanarel.s3.amazonaws.com/RPM-GPG-KEY-grafana).
 - Installs binary to `/usr/sbin/grafana-server`
 - Copies init.d script to `/etc/init.d/grafana-server`
 - Installs default file (environment vars) to `/etc/sysconfig/grafana-server`
-- Copies configuration file to `/etc/grafana/grafana.ini`
+- Copies configuration file to `/etc/grafana/grafana_bmtech.ini`
 - Installs systemd service (if systemd is available) name `grafana-server.service`
-- The default configuration uses a log file at `/var/log/grafana/grafana.log`
-- The default configuration specifies an sqlite3 database at `/var/lib/grafana/grafana.db`
+- The default configuration uses a log file at `/var/log/grafana/grafana_bmtech.log`
+- The default configuration specifies an sqlite3 database at `/var/lib/grafana/grafana_bmtech.db`
 
 ## Start the server (init.d service)
 
@@ -151,12 +151,12 @@ By default Grafana will log to `/var/log/grafana`
 ### Database
 
 The default configuration specifies a sqlite3 database located at
-`/var/lib/grafana/grafana.db`. Please backup this database before
+`/var/lib/grafana/grafana_bmtech.db`. Please backup this database before
 upgrades. You can also use MySQL or Postgres as the Grafana database, as detailed on [the configuration page]({{< relref "configuration.md#database" >}}).
 
 ## Configuration
 
-The configuration file is located at `/etc/grafana/grafana.ini`.  Go the
+The configuration file is located at `/etc/grafana/grafana_bmtech.ini`.  Go the
 [Configuration]({{< relref "configuration.md" >}}) page for details on all
 those options.
 

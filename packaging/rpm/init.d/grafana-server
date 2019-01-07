@@ -3,7 +3,7 @@
 # chkconfig: 2345 80 05
 # description: Grafana web server & backend
 # processname: grafana
-# config: /etc/grafana/grafana.ini
+# config: /etc/grafana/grafana_bmtech.ini
 # pidfile: /var/run/grafana.pid
 
 ### BEGIN INIT INFO

@@ -7,13 +7,13 @@ echo "POSTTRANS: Running script"
 [ -f /etc/sysconfig/grafana-server ] && . /etc/sysconfig/grafana-server
 
 # copy config files if missing
-if [ ! -f /etc/grafana/grafana.ini ]; then
+if [ ! -f /etc/grafana/grafana_bmtech.ini ]; then
   echo "POSTTRANS: Config file not found"
 
-  if [ -f /etc/grafana/grafana.ini.rpmsave ]; then
-    echo "POSTTRANS: /etc/grafana/grafana.ini.rpmsave config file found."
-    mv /etc/grafana/grafana.ini.rpmsave /etc/grafana/grafana.ini
-    echo "POSTTRANS: /etc/grafana/grafana.ini restored"
+  if [ -f /etc/grafana/grafana_bmtech.ini.rpmsave ]; then
+    echo "POSTTRANS: /etc/grafana/grafana_bmtech.ini.rpmsave config file found."
+    mv /etc/grafana/grafana_bmtech.ini.rpmsave /etc/grafana/grafana_bmtech.ini
+    echo "POSTTRANS: /etc/grafana/grafana_bmtech.ini restored"
 
     if [ -f /etc/grafana/ldap.toml.rpmsave ]; then
       echo "POSTTRANS: /etc/grafana/ldap.toml.rpmsave found"

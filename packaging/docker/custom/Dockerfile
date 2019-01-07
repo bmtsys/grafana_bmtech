@@ -1,6 +1,6 @@
 ARG GRAFANA_VERSION="latest"
 
-FROM grafana/grafana:${GRAFANA_VERSION}
+FROM grafana/grafana_bmtech:${GRAFANA_VERSION}
 
 USER grafana
 

@@ -4,8 +4,8 @@ import (
 	"context"
 	"time"
 
-	"github.com/grafana/grafana/pkg/bus"
-	"github.com/grafana/grafana/pkg/log"
+	"github.com/grafana/grafana_bmtech/pkg/bus"
+	"github.com/grafana/grafana_bmtech/pkg/log"
 	sqlite3 "github.com/mattn/go-sqlite3"
 )
 

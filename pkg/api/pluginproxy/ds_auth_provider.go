@@ -9,9 +9,9 @@ import (
 	"strings"
 	"text/template"
 
-	m "github.com/grafana/grafana/pkg/models"
-	"github.com/grafana/grafana/pkg/plugins"
-	"github.com/grafana/grafana/pkg/util"
+	m "github.com/grafana/grafana_bmtech/pkg/models"
+	"github.com/grafana/grafana_bmtech/pkg/plugins"
+	"github.com/grafana/grafana_bmtech/pkg/util"
 	"golang.org/x/oauth2/google"
 )
 

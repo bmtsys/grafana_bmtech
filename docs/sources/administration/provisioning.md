@@ -25,7 +25,7 @@ Checkout the [configuration](/installation/configuration) page for more informat
 
 > **Note.** If you have installed Grafana using the `deb` or `rpm`
 > packages, then your configuration file is located at
-> `/etc/grafana/grafana.ini`. This path is specified in the Grafana
+> `/etc/grafana/grafana_bmtech.ini`. This path is specified in the Grafana
 > init.d script using `--config` file parameter.
 
 ### Using Environment Variables

@@ -27,10 +27,10 @@ build-docker-dev:
 	@echo "\033[92mInfo:\033[0m the frontend code is expected to be built already."
 	go run build.go -goos linux -pkg-arch amd64 ${OPT} build pkg-archive latest
 	cp dist/grafana-latest.linux-x64.tar.gz packaging/docker
-	cd packaging/docker && docker build --tag grafana/grafana:dev .
+	cd packaging/docker && docker build --tag grafana/grafana_bmtech:dev .
 
 build-docker-full:
-	docker build --tag grafana/grafana:dev .
+	docker build --tag grafana/grafana_bmtech:dev .
 
 test-go:
 	go test -v ./pkg/...

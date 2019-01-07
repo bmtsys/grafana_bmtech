@@ -82,10 +82,10 @@ sudo apt-get install -y apt-transport-https
 - Installs binary to `/usr/sbin/grafana-server`
 - Installs Init.d script to `/etc/init.d/grafana-server`
 - Creates default file (environment vars) to `/etc/default/grafana-server`
-- Installs configuration file to `/etc/grafana/grafana.ini`
+- Installs configuration file to `/etc/grafana/grafana_bmtech.ini`
 - Installs systemd service (if systemd is available) name `grafana-server.service`
-- The default configuration sets the log file at `/var/log/grafana/grafana.log`
-- The default configuration specifies an sqlite3 db at `/var/lib/grafana/grafana.db`
+- The default configuration sets the log file at `/var/log/grafana/grafana_bmtech.log`
+- The default configuration specifies an sqlite3 db at `/var/lib/grafana/grafana_bmtech.db`
 - Installs HTML/JS/CSS and other Grafana files at `/usr/share/grafana`
 
 ## Start the server (init.d service)
@@ -138,12 +138,12 @@ By default Grafana will log to `/var/log/grafana`
 ### Database
 
 The default configuration specifies a sqlite3 database located at
-`/var/lib/grafana/grafana.db`. Please backup this database before
+`/var/lib/grafana/grafana_bmtech.db`. Please backup this database before
 upgrades. You can also use MySQL or Postgres as the Grafana database, as detailed on [the configuration page]({{< relref "configuration.md#database" >}}).
 
 ## Configuration
 
-The configuration file is located at `/etc/grafana/grafana.ini`.  Go the
+The configuration file is located at `/etc/grafana/grafana_bmtech.ini`.  Go the
 [Configuration]({{< relref "configuration.md" >}}) page for details on all
 those options.
 

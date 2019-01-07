@@ -31,7 +31,7 @@ A common problem is forgetting to uncomment a line in the `custom.ini` (or `graf
 
 > **Note.** If you have installed Grafana using the `deb` or `rpm`
 > packages, then your configuration file is located at
-> `/etc/grafana/grafana.ini`. This path is specified in the Grafana
+> `/etc/grafana/grafana_bmtech.ini`. This path is specified in the Grafana
 > init.d script using `--config` file parameter.
 
 ## Using environment variables

@@ -82,18 +82,18 @@ The Prometheus data source now supports the Table Data format by automatically a
 
 Changes:
 
-- **Table**: Support to change column header text [#3551](https://github.com/grafana/grafana/issues/3551)
-- **InfluxDB**: influxdb query builder support for ORDER BY and LIMIT (allows TOPN queries) [#6065](https://github.com/grafana/grafana/issues/6065) Support influxdb's SLIMIT Feature [#7232](https://github.com/grafana/grafana/issues/7232) thx [@thuck](https://github.com/thuck)
-- **Graph**: Support auto grid min/max when using log scale [#3090](https://github.com/grafana/grafana/issues/3090), thx [@bigbenhur](https://github.com/bigbenhur)
-- **Prometheus**: Make Prometheus query field a textarea [#7663](https://github.com/grafana/grafana/issues/7663), thx [@hagen1778](https://github.com/hagen1778)
-- **Server**: Support listening on a UNIX socket [#4030](https://github.com/grafana/grafana/issues/4030), thx [@mitjaziv](https://github.com/mitjaziv)
+- **Table**: Support to change column header text [#3551](https://github.com/grafana/grafana_bmtech/issues/3551)
+- **InfluxDB**: influxdb query builder support for ORDER BY and LIMIT (allows TOPN queries) [#6065](https://github.com/grafana/grafana_bmtech/issues/6065) Support influxdb's SLIMIT Feature [#7232](https://github.com/grafana/grafana_bmtech/issues/7232) thx [@thuck](https://github.com/thuck)
+- **Graph**: Support auto grid min/max when using log scale [#3090](https://github.com/grafana/grafana_bmtech/issues/3090), thx [@bigbenhur](https://github.com/bigbenhur)
+- **Prometheus**: Make Prometheus query field a textarea [#7663](https://github.com/grafana/grafana_bmtech/issues/7663), thx [@hagen1778](https://github.com/hagen1778)
+- **Server**: Support listening on a UNIX socket [#4030](https://github.com/grafana/grafana_bmtech/issues/4030), thx [@mitjaziv](https://github.com/mitjaziv)
 
 Fixes:
 
-- **MySQL**: 4-byte UTF8 not supported when using MySQL database (allows Emojis in Dashboard Names) [#7958](https://github.com/grafana/grafana/issues/7958)
-- **Dashboard**: Description tooltip is not fully displayed [#7970](https://github.com/grafana/grafana/issues/7970)
+- **MySQL**: 4-byte UTF8 not supported when using MySQL database (allows Emojis in Dashboard Names) [#7958](https://github.com/grafana/grafana_bmtech/issues/7958)
+- **Dashboard**: Description tooltip is not fully displayed [#7970](https://github.com/grafana/grafana_bmtech/issues/7970)
 
-Lots more enhancements and fixes can be found in the [Changelog](https://github.com/grafana/grafana/blob/master/CHANGELOG.md).
+Lots more enhancements and fixes can be found in the [Changelog](https://github.com/grafana/grafana_bmtech/blob/master/CHANGELOG.md).
 
 ## Download
 

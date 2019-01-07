@@ -3,7 +3,7 @@
 # to allow `make DOCSPORT=9000 docs`
 DOCSPORT := 3004
 
-DOCKER_DOCS_IMAGE := grafana/grafana-docs
+DOCKER_DOCS_IMAGE := grafana/grafana_bmtech-docs
 
 SOURCES_HOST_DIR := "$(shell pwd)/sources"
 

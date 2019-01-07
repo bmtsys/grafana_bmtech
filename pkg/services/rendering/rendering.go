@@ -9,14 +9,14 @@ import (
 
 	plugin "github.com/hashicorp/go-plugin"
 
-	pluginModel "github.com/grafana/grafana-plugin-model/go/renderer"
-	"github.com/grafana/grafana/pkg/log"
-	"github.com/grafana/grafana/pkg/middleware"
-	"github.com/grafana/grafana/pkg/models"
-	"github.com/grafana/grafana/pkg/plugins"
-	"github.com/grafana/grafana/pkg/registry"
-	"github.com/grafana/grafana/pkg/setting"
-	"github.com/grafana/grafana/pkg/util"
+	pluginModel "github.com/grafana/grafana_bmtech-plugin-model/go/renderer"
+	"github.com/grafana/grafana_bmtech/pkg/log"
+	"github.com/grafana/grafana_bmtech/pkg/middleware"
+	"github.com/grafana/grafana_bmtech/pkg/models"
+	"github.com/grafana/grafana_bmtech/pkg/plugins"
+	"github.com/grafana/grafana_bmtech/pkg/registry"
+	"github.com/grafana/grafana_bmtech/pkg/setting"
+	"github.com/grafana/grafana_bmtech/pkg/util"
 )
 
 func init() {

@@ -7,8 +7,8 @@ import (
 	"path"
 	"time"
 
-	pluginModel "github.com/grafana/grafana-plugin-model/go/renderer"
-	"github.com/grafana/grafana/pkg/plugins"
+	pluginModel "github.com/grafana/grafana_bmtech-plugin-model/go/renderer"
+	"github.com/grafana/grafana_bmtech/pkg/plugins"
 	plugin "github.com/hashicorp/go-plugin"
 )
 

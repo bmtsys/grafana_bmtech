@@ -230,7 +230,7 @@
 
 [[projects]]
   branch = "master"
-  name = "github.com/grafana/grafana-plugin-model"
+  name = "github.com/grafana/grafana_bmtech-plugin-model"
   packages = [
     "go/datasource",
     "go/renderer"

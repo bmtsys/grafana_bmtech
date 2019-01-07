@@ -14,7 +14,7 @@ Included services
 
 ### Build grafana docker container
 
-Build a Grafana docker container from current branch and commit and tag it as grafana/grafana:dev.
+Build a Grafana docker container from current branch and commit and tag it as grafana/grafana_bmtech:dev.
 
 ```bash
 $ cd <grafana repo>

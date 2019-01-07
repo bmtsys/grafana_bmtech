@@ -2,7 +2,7 @@ package models
 
 import (
 	"errors"
-	"github.com/grafana/grafana/pkg/setting"
+	"github.com/grafana/grafana_bmtech/pkg/setting"
 	"time"
 )
 

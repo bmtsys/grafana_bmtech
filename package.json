@@ -7,7 +7,7 @@
   "version": "5.5.0-pre1",
   "repository": {
     "type": "git",
-    "url": "http://github.com/grafana/grafana.git"
+    "url": "http://github.com/grafana/grafana_bmtech.git"
   },
   "devDependencies": {
     "@babel/core": "^7.1.2",

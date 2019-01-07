@@ -5,7 +5,7 @@
 Start your container binding the external port `3000`.
 
 ```bash
-docker run -d --name=grafana -p 3000:3000 grafana/grafana
+docker run -d --name=grafana -p 3000:3000 grafana/grafana_bmtech
 ```
 
 Try it out, default admin user is admin/admin.
@@ -17,7 +17,7 @@ Further documentation can be found at http://docs.grafana.org/installation/docke
 ## Changelog
 
 ### v5.1.5, v5.2.0-beta2
-* Fix: config keys ending with _FILE are not respected [#170](https://github.com/grafana/grafana-docker/issues/170)
+* Fix: config keys ending with _FILE are not respected [#170](https://github.com/grafana/grafana_bmtech-docker/issues/170)
 
 ### v5.2.0-beta1
 * Support for Docker Secrets
@@ -40,4 +40,4 @@ Further documentation can be found at http://docs.grafana.org/installation/docke
 * Plugins dir (`/var/lib/grafana/plugins`) is no longer a separate volume
 
 ### v3.1.1
-* Make it possible to install specific plugin version https://github.com/grafana/grafana-docker/issues/59#issuecomment-260584026
+* Make it possible to install specific plugin version https://github.com/grafana/grafana_bmtech-docker/issues/59#issuecomment-260584026

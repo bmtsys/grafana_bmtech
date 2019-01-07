@@ -37,13 +37,13 @@ You can also install the latest unstable grafana from git:
 
 
 ```bash
-brew install --HEAD grafana/grafana/grafana
+brew install --HEAD grafana/grafana_bmtech/grafana
 ```
 
 To upgrade grafana if you've installed from HEAD:
 
 ```bash
-brew reinstall --HEAD grafana/grafana/grafana
+brew reinstall --HEAD grafana/grafana_bmtech/grafana
 ```
 
 ### Starting Grafana
@@ -65,11 +65,11 @@ Default login and password `admin`/ `admin`
 
 ### Configuration
 
-The Configuration file should be located at `/usr/local/etc/grafana/grafana.ini`.
+The Configuration file should be located at `/usr/local/etc/grafana/grafana_bmtech.ini`.
 
 ### Logs
 
-The log file should be located at `/usr/local/var/log/grafana/grafana.log`.
+The log file should be located at `/usr/local/var/log/grafana/grafana_bmtech.log`.
 
 ### Plugins
 

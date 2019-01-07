@@ -23,7 +23,7 @@ Create a directory for the project and set your path accordingly (or use the [de
 
 ```bash
 export GOPATH=`pwd`
-go get github.com/grafana/grafana
+go get github.com/grafana/grafana_bmtech
 ```
 
 On Windows use setx instead of export and then restart your command prompt:
@@ -31,11 +31,11 @@ On Windows use setx instead of export and then restart your command prompt:
 setx GOPATH %cd%
 ```
 
-You may see an error such as: `package github.com/grafana/grafana: no buildable Go source files`. This is just a warning, and you can proceed with the directions.
+You may see an error such as: `package github.com/grafana/grafana_bmtech: no buildable Go source files`. This is just a warning, and you can proceed with the directions.
 
 ## Building the backend
 ```bash
-cd $GOPATH/src/github.com/grafana/grafana
+cd $GOPATH/src/github.com/grafana/grafana_bmtech
 go run build.go setup
 go run build.go build              # (or 'go build ./pkg/cmd/grafana-server')
 ```

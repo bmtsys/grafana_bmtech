@@ -3,7 +3,7 @@ package dashdiffs
 import (
 	"testing"
 
-	"github.com/grafana/grafana/pkg/components/simplejson"
+	"github.com/grafana/grafana_bmtech/pkg/components/simplejson"
 	. "github.com/smartystreets/goconvey/convey"
 )
 

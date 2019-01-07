@@ -35,8 +35,8 @@ enabled = true
 Or if using docker:
 
 ```bash
-docker pull grafana/grafana:master
-docker run --name grafana -p 3000:3000 -e "GF_EXPLORE_ENABLED=true" grafana/grafana:master
+docker pull grafana/grafana_bmtech:master
+docker run --name grafana -p 3000:3000 -e "GF_EXPLORE_ENABLED=true" grafana/grafana_bmtech:master
 ```
 
 ## How to Start Exploring

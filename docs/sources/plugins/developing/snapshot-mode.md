@@ -76,4 +76,4 @@ loadLocationDataFromFile(reload) {
 
 It is really easy to forget to add this support but it enables a great feature and can be used to demo your panel.
 
-If there is a panel plugin that you would like to be installed on the Raintank Snapshot server then please contact us via [Slack](https://raintank.slack.com) or [GitHub](https://github.com/grafana/grafana).
+If there is a panel plugin that you would like to be installed on the Raintank Snapshot server then please contact us via [Slack](https://raintank.slack.com) or [GitHub](https://github.com/grafana/grafana_bmtech).

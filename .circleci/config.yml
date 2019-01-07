@@ -26,7 +26,7 @@ jobs:
           MYSQL_DATABASE: grafana_tests
           MYSQL_USER: grafana
           MYSQL_PASSWORD: password
-    working_directory: /go/src/github.com/grafana/grafana
+    working_directory: /go/src/github.com/grafana/grafana_bmtech
     steps:
         - checkout
         - run: sudo apt update
@@ -45,7 +45,7 @@ jobs:
           POSTGRES_USER: grafanatest
           POSTGRES_PASSWORD: grafanatest
           POSTGRES_DB: grafanatest
-    working_directory: /go/src/github.com/grafana/grafana
+    working_directory: /go/src/github.com/grafana/grafana_bmtech
     steps:
         - checkout
         - run: sudo apt update
@@ -78,7 +78,7 @@ jobs:
         environment:
           # we need CGO because of go-sqlite3
           CGO_ENABLED: 1
-    working_directory: /go/src/github.com/grafana/grafana
+    working_directory: /go/src/github.com/grafana/grafana_bmtech
     steps:
       - checkout
       - run: 'go get -u github.com/alecthomas/gometalinter'
@@ -118,7 +118,7 @@ jobs:
   test-backend:
     docker:
       - image: circleci/golang:1.11
-    working_directory: /go/src/github.com/grafana/grafana
+    working_directory: /go/src/github.com/grafana/grafana_bmtech
     steps:
       - checkout
       - run:
@@ -128,7 +128,7 @@ jobs:
   build-all:
     docker:
      - image: grafana/build-container:1.2.1
-    working_directory: /go/src/github.com/grafana/grafana
+    working_directory: /go/src/github.com/grafana/grafana_bmtech
     steps:
       - checkout
       - run:
@@ -176,7 +176,7 @@ jobs:
   build:
     docker:
      - image: grafana/build-container:1.2.1
-    working_directory: /go/src/github.com/grafana/grafana
+    working_directory: /go/src/github.com/grafana/grafana_bmtech
     steps:
       - checkout
       - run:
@@ -245,7 +245,7 @@ jobs:
   build-enterprise:
     docker:
      - image: grafana/build-container:1.2.1
-    working_directory: /go/src/github.com/grafana/grafana
+    working_directory: /go/src/github.com/grafana/grafana_bmtech
     steps:
       - checkout
       - run:
@@ -277,7 +277,7 @@ jobs:
   build-all-enterprise:
     docker:
     - image: grafana/build-container:1.2.1
-    working_directory: /go/src/github.com/grafana/grafana
+    working_directory: /go/src/github.com/grafana/grafana_bmtech
     steps:
     - checkout
     - run:
@@ -323,7 +323,7 @@ jobs:
 
   deploy-enterprise-master:
     docker:
-      - image: grafana/grafana-ci-deploy:1.0.0
+      - image: grafana/grafana_bmtech-ci-deploy:1.0.0
     steps:
       - attach_workspace:
           at: .
@@ -346,7 +346,7 @@ jobs:
 
   deploy-enterprise-release:
     docker:
-    - image: grafana/grafana-ci-deploy:1.0.0
+    - image: grafana/grafana_bmtech-ci-deploy:1.0.0
     steps:
       - attach_workspace:
          at: .
@@ -368,7 +368,7 @@ jobs:
 
   deploy-master:
     docker:
-      - image: grafana/grafana-ci-deploy:1.0.0
+      - image: grafana/grafana_bmtech-ci-deploy:1.0.0
     steps:
       - attach_workspace:
           at: .
@@ -398,7 +398,7 @@ jobs:
 
   deploy-release:
     docker:
-      - image: grafana/grafana-ci-deploy:1.0.0
+      - image: grafana/grafana_bmtech-ci-deploy:1.0.0
     steps:
       - attach_workspace:
           at: .

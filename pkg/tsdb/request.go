@@ -3,7 +3,7 @@ package tsdb
 import (
 	"context"
 
-	"github.com/grafana/grafana/pkg/models"
+	"github.com/grafana/grafana_bmtech/pkg/models"
 )
 
 type HandleRequestFunc func(ctx context.Context, dsInfo *models.DataSource, req *TsdbQuery) (*Response, error)

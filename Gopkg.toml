@@ -20,9 +20,9 @@
 #  version = "2.4.0"
 
 ignored = [
-  "github.com/grafana/grafana/data/*",
-  "github.com/grafana/grafana/public/*",
-  "github.com/grafana/grafana/node_modules/*"
+  "github.com/grafana/grafana_bmtech/data/*",
+  "github.com/grafana/grafana_bmtech/public/*",
+  "github.com/grafana/grafana_bmtech/node_modules/*"
  ]
 
 [[constraint]]
@@ -97,7 +97,7 @@ ignored = [
 
 [[constraint]]
   branch = "master"
-  name = "github.com/grafana/grafana-plugin-model"
+  name = "github.com/grafana/grafana_bmtech-plugin-model"
 
 [[constraint]]
   branch = "master"

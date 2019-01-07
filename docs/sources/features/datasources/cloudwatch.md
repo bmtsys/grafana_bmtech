@@ -23,7 +23,7 @@ Grafana ships with built in support for CloudWatch. You just have to add it as a
 4. Select `Cloudwatch` from the *Type* dropdown.
 
 > NOTE: If at any moment you have issues with getting this datasource to work and Grafana is giving you undescriptive errors then don't
-forget to check your log file (try looking in /var/log/grafana/grafana.log).
+forget to check your log file (try looking in /var/log/grafana/grafana_bmtech.log).
 
 Name | Description
 ------------ | -------------

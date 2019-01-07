@@ -16,8 +16,8 @@ import (
 	"time"
 
 	"github.com/go-macaron/session"
-	"github.com/grafana/grafana/pkg/log"
-	"github.com/grafana/grafana/pkg/util"
+	"github.com/grafana/grafana_bmtech/pkg/log"
+	"github.com/grafana/grafana_bmtech/pkg/util"
 	"gopkg.in/ini.v1"
 )
 

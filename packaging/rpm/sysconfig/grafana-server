@@ -12,7 +12,7 @@ MAX_OPEN_FILES=10000
 
 CONF_DIR=/etc/grafana
 
-CONF_FILE=/etc/grafana/grafana.ini
+CONF_FILE=/etc/grafana/grafana_bmtech.ini
 
 RESTART_ON_UPGRADE=true
 

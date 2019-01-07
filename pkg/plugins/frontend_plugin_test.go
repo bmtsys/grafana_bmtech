@@ -3,7 +3,7 @@ package plugins
 import (
 	"testing"
 
-	"github.com/grafana/grafana/pkg/setting"
+	"github.com/grafana/grafana_bmtech/pkg/setting"
 	. "github.com/smartystreets/goconvey/convey"
 )
 

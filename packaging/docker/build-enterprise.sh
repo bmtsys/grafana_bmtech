@@ -2,7 +2,7 @@
 set -e
 
 _raw_grafana_tag=$1
-_docker_repo=${2:-grafana/grafana-enterprise}
+_docker_repo=${2:-grafana/grafana_bmtech-enterprise}
 
 if echo "$_raw_grafana_tag" | grep -q "^v"; then
   _grafana_tag=$(echo "${_raw_grafana_tag}" | cut -d "v" -f 2)

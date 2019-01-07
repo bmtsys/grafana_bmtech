@@ -14,7 +14,7 @@ Thank you for your interest in contributing to Grafana Labs ("We" or "Us").
 
 This contributor agreement ("Agreement") documents the rights granted by contributors to Us.
 To make this document effective, please sign it following the instructions at
-[cla-assistant](https://cla-assistant.io/grafana/grafana). This is a legally binding document,
+[cla-assistant](https://cla-assistant.io/grafana/grafana_bmtech). This is a legally binding document,
 so please read it carefully before agreeing to it. The Agreement may cover more than
 one software project managed by Us.
 
@@ -96,7 +96,7 @@ TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW, IN NO EVENT WILL YOU [OR US] 
 
 ### Sign using CLA-Assistant
 
-[https://cla-assistant.io/grafana/grafana](https://cla-assistant.io/grafana/grafana)
+[https://cla-assistant.io/grafana/grafana_bmtech](https://cla-assistant.io/grafana/grafana_bmtech)
 
 <br>
 <br>

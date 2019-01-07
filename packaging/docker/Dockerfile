@@ -16,7 +16,7 @@ ARG GF_UID="472"
 ARG GF_GID="472"
 
 ENV PATH=/usr/share/grafana/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin \
-    GF_PATHS_CONFIG="/etc/grafana/grafana.ini" \
+    GF_PATHS_CONFIG="/etc/grafana/grafana_bmtech.ini" \
     GF_PATHS_DATA="/var/lib/grafana" \
     GF_PATHS_HOME="/usr/share/grafana" \
     GF_PATHS_LOGS="/var/log/grafana" \

@@ -15,7 +15,7 @@ weight = 10
 We recommend everyone to upgrade Grafana often to stay up to date with the latest fixes and enhancements.
 In order make this a reality Grafana upgrades are backward compatible and the upgrade process is simple & quick.
 
-Upgrading is generally always safe (between many minor and one major version) and dashboards and graphs will look the same. There can be minor breaking changes in some edge cases which are usually outlined in the [Release Notes](https://community.grafana.com/c/releases) and [Changelog](https://github.com/grafana/grafana/blob/master/CHANGELOG.md)
+Upgrading is generally always safe (between many minor and one major version) and dashboards and graphs will look the same. There can be minor breaking changes in some edge cases which are usually outlined in the [Release Notes](https://community.grafana.com/c/releases) and [Changelog](https://github.com/grafana/grafana_bmtech/blob/master/CHANGELOG.md)
 
 ## Database Backup
 
@@ -23,7 +23,7 @@ Before upgrading it can be a good idea to backup your Grafana database. This wil
 
 #### sqlite
 
-If you use sqlite you only need to make a backup of your `grafana.db` file. This is usually located at `/var/lib/grafana/grafana.db` on unix system.
+If you use sqlite you only need to make a backup of your `grafana.db` file. This is usually located at `/var/lib/grafana/grafana_bmtech.db` on unix system.
 If you are unsure what database you use and where it is stored check you grafana configuration file. If you
 installed grafana to custom location using a binary tar/zip it is usually in `<grafana_install_dir>/data`.
 

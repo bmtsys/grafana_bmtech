@@ -19,8 +19,8 @@ import (
 	"net/http"
 	"time"
 
-	m "github.com/grafana/grafana/pkg/models"
-	"github.com/grafana/grafana/pkg/setting"
+	m "github.com/grafana/grafana_bmtech/pkg/models"
+	"github.com/grafana/grafana_bmtech/pkg/setting"
 	"github.com/prometheus/client_golang/prometheus"
 	"gopkg.in/macaron.v1"
 )

@@ -120,7 +120,7 @@ In this example we use Apache as a reverse proxy in front of Grafana. Apache han
 
 ## Full walk through using Docker.
 
-For this example, we use the official Grafana docker image available at [Docker Hub](https://hub.docker.com/r/grafana/grafana/)
+For this example, we use the official Grafana docker image available at [Docker Hub](https://hub.docker.com/r/grafana/grafana_bmtech/)
 
 * Create a file `grafana.ini` with the following contents
 
@@ -137,11 +137,11 @@ header_property = username
 auto_sign_up = true
 ```
 
-Launch the Grafana container, using our custom grafana.ini to replace `/etc/grafana/grafana.ini`. We don't expose
+Launch the Grafana container, using our custom grafana.ini to replace `/etc/grafana/grafana_bmtech.ini`. We don't expose
 any ports for this container as it will only be connected to by our Apache container.
 
 ```bash
-docker run -i -v $(pwd)/grafana.ini:/etc/grafana/grafana.ini --name grafana grafana/grafana
+docker run -i -v $(pwd)/grafana.ini:/etc/grafana/grafana_bmtech.ini --name grafana grafana/grafana_bmtech
 ```
 
 ### Apache Container

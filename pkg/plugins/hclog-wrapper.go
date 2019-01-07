@@ -3,7 +3,7 @@ package plugins
 import (
 	"log"
 
-	glog "github.com/grafana/grafana/pkg/log"
+	glog "github.com/grafana/grafana_bmtech/pkg/log"
 	hclog "github.com/hashicorp/go-hclog"
 )
 
