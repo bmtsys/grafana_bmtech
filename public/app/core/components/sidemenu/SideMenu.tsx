@@ -16,7 +16,7 @@ export class SideMenu extends PureComponent {
 
   render() {
     return [
-      <div className="sidemenu__logo" key="logo">
+      <div className="sidemenu__logo" onClick={this.toggleSideMenu} key="logo">
         <img src="public/img/bmtech-white-logo.png" alt="Grafana" />
       </div>,
       <div className="sidemenu__logo_small_breakpoint" onClick={this.toggleSideMenuSmallBreakpoint} key="hamburger">
