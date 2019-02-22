@@ -7,7 +7,7 @@ import config from '../../config';
 
 export default function BottomSection() {
   const navTree = _.cloneDeep(config.bootData.navTree);
-  const bottomNav = _.filter(navTree, item => (item.id !== 'help' && item.hideFromMenu));
+  const bottomNav = _.filter(navTree, item => item.hideFromMenu);
   const isSignedIn = contextSrv.isSignedIn;
   const user = contextSrv.user;
 
