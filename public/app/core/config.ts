@@ -36,7 +36,7 @@ export class Settings {
   constructor(options) {
     const defaults = {
       datasources: {},
-      windowTitlePrefix: 'TetraWing Insights - ',
+      windowTitlePrefix: 'Grafana - ',
       panels: {},
       newPanelTitle: 'Panel Title',
       playlist_timespan: '1m',
